@@ -13,7 +13,11 @@ class ConstraintForce : public Force {
 
 public:
     ConstraintForce();
-    void calc_Force() override;
+
+    virtual getC();
+    virtual getCdot();
+    virtual getJ();
+    virtual getJdot();
 
 
 };
