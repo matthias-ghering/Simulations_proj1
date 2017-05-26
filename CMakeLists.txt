@@ -35,7 +35,8 @@ set(SOURCE_FILES
         ParticleToy/GravityForce.h
         ParticleToy/ConstraintForce.cpp
         ParticleToy/ConstraintForce.h
-        )
+        ParticleToy/EulerianSolver.cpp
+        ParticleToy/EulerianSolver.h ParticleToy/MidPointSolver.cpp ParticleToy/MidPointSolver.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)

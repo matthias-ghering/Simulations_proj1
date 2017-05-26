@@ -6,6 +6,8 @@
 #include "RodConstraint.h"
 #include "CircularWireConstraint.h"
 #include "GravityForce.h"
+#include "Solver.h"
+#include "EulerianSolver.h"
 
 #include <vector>
 #include <stdlib.h>
@@ -259,7 +261,10 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-    if (dsim) simulation_step(pVector, fVector, dt);
+    if (dsim){
+        Solver* solver = new EulerianSolver();
+        solver->simulation_step(pVector, fVector, dt);
+    }
     else {
         get_from_UI();
         remap_GUI();
