@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Particle.h"
-#include "ConstraintForce.h"
+#include "Constraint.h"
 
-class RodConstraint : public ConstraintForce{
+class RodConstraint : public Constraint{
 
 public:
     RodConstraint(Particle *p1, Particle *p2, double dist);

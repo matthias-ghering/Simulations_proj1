@@ -9,15 +9,15 @@
 #include "Force.h"
 #include "Particle.h"
 
-class ConstraintForce : public Force {
+class Constraint : public Force {
 
 public:
-    ConstraintForce();
+    Constraint();
 
-    virtual getC();
-    virtual getCdot();
-    virtual getJ();
-    virtual getJdot();
+    //virtual getC();
+    //virtual getCdot();
+    //virtual getJ();
+    //virtual getJdot();
 
 
 };

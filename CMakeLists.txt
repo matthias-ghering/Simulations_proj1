@@ -33,8 +33,8 @@ set(SOURCE_FILES
         ParticleToy/Force.h
         ParticleToy/GravityForce.cpp
         ParticleToy/GravityForce.h
-        ParticleToy/ConstraintForce.cpp
-        ParticleToy/ConstraintForce.h
+        ParticleToy/Constraint.cpp
+        ParticleToy/Constraint.h
         )
 
 find_package (OpenGL REQUIRED)
