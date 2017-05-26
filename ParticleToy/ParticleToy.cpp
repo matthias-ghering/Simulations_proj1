@@ -37,7 +37,6 @@ static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
 
-static SpringForce *delete_this_dummy_spring = NULL;
 static RodConstraint *delete_this_dummy_rod = NULL;
 static CircularWireConstraint *delete_this_dummy_wire = NULL;
 
@@ -50,13 +49,10 @@ free/clear/allocate simulation data
 
 static void free_data(void) {
     pVector.clear();
+    fVector.clear();
     if (delete_this_dummy_rod) {
         delete delete_this_dummy_rod;
         delete_this_dummy_rod = NULL;
-    }
-    if (delete_this_dummy_spring) {
-        delete delete_this_dummy_spring;
-        delete_this_dummy_spring = NULL;
     }
     if (delete_this_dummy_wire) {
         delete delete_this_dummy_wire;
@@ -65,10 +61,10 @@ static void free_data(void) {
 }
 
 static void clear_data(void) {
-    int ii, size = pVector.size();
+    int size = pVector.size();
 
-    for (ii = 0; ii < size; ii++) {
-        pVector[ii]->reset();
+    for (int i = 0; i < size; i++) {
+        pVector[i]->reset();
     }
 }
 
@@ -137,16 +133,16 @@ static void post_display(void) {
 static void draw_particles(void) {
     int size = pVector.size();
 
-    for (int ii = 0; ii < size; ii++) {
-        pVector[ii]->draw();
+    for (int i = 0; i < size; i++) {
+        pVector[i]->draw();
     }
 }
 
 static void draw_forces(void) {
     // change this to iteration over full set
     int size = fVector.size();
-    for (int ii = 0; ii < size; ii++) {
-        fVector[ii]->draw();
+    for (int i = 0; i < size; i++) {
+        fVector[i]->draw();
     }
 
 
@@ -198,10 +194,10 @@ static void get_from_UI() {
 }
 
 static void remap_GUI() {
-    int ii, size = pVector.size();
-    for (ii = 0; ii < size; ii++) {
-        pVector[ii]->m_Position[0] = pVector[ii]->m_ConstructPos[0];
-        pVector[ii]->m_Position[1] = pVector[ii]->m_ConstructPos[1];
+    int i, size = pVector.size();
+    for (i = 0; i < size; i++) {
+        pVector[i]->m_Position[0] = pVector[i]->m_ConstructPos[0];
+        pVector[i]->m_Position[1] = pVector[i]->m_ConstructPos[1];
     }
 }
 
