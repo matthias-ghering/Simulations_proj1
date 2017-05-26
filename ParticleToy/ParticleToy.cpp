@@ -312,6 +312,19 @@ static void open_glut_window(void) {
     glutDisplayFunc(display_func);
 }
 
+void Console()
+{
+    AllocConsole();
+    FILE *pFileCon = NULL;
+    pFileCon = freopen("CONOUT$", "w", stdout);
+
+    COORD coordInfo;
+    coordInfo.X = 100;
+    coordInfo.Y = 9000;
+
+    SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), coordInfo);
+    SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE),ENABLE_QUICK_EDIT_MODE| ENABLE_EXTENDED_FLAGS);
+}
 
 /*
 ----------------------------------------------------------------------
@@ -321,6 +334,7 @@ main --- main routine
 
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
+    Console();
 
     if (argc == 1) {
         N = 64;
