@@ -11,8 +11,6 @@
 class Constraint {
 
 public:
-    Constraint();
-
     virtual float getC() = 0;
     virtual float getCdot() = 0;
     virtual std::vector<Vec2f> getJ() = 0;

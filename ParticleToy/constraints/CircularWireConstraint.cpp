@@ -17,6 +17,7 @@ CircularWireConstraint::CircularWireConstraint(Particle *p, const Vec2f &center,
         m_p(p), m_center(center), m_radius(radius) {}
 
 float CircularWireConstraint:: getC() {
+
 }
 
 float CircularWireConstraint::getCdot() {
