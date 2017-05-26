@@ -13,6 +13,7 @@ public:
     Force();
 
     virtual void calc_Force();
+    virtual void draw();
 
 };
 

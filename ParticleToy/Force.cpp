@@ -9,3 +9,4 @@ void Force::calc_Force() {
 }
 
 Force::Force() {}
+void Force::draw() {}
