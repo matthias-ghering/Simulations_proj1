@@ -14,7 +14,6 @@ class ConstraintForce : public Force {
 public:
     ConstraintForce();
     void calc_Force() override;
-    //void calc_Force() override;
 
 
 };

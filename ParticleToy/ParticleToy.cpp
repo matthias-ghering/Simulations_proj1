@@ -111,8 +111,8 @@ static void post_display(void) {
     if (dump_frames) {
         const int FRAME_INTERVAL = 4;
         if ((frame_number % FRAME_INTERVAL) == 0) {
-            const unsigned int w = glutGet(GLUT_WINDOW_WIDTH);
-            const unsigned int h = glutGet(GLUT_WINDOW_HEIGHT);
+            const int w = glutGet(GLUT_WINDOW_WIDTH);
+            const int h = glutGet(GLUT_WINDOW_HEIGHT);
             unsigned char *buffer = (unsigned char *) malloc(w * h * 4 * sizeof(unsigned char));
             if (!buffer)
                 exit(-1);
@@ -220,10 +220,11 @@ static void key_func(unsigned char key, int x, int y) {
         case 'Q':
             free_data();
             exit(0);
-            break;
 
         case ' ':
             dsim = !dsim;
+            break;
+        default:
             break;
     }
 }
@@ -340,8 +341,8 @@ int main(int argc, char **argv) {
                 N, dt, d);
     } else {
         N = atoi(argv[1]);
-        dt = atof(argv[2]);
-        d = atof(argv[3]);
+        dt = (float) atof(argv[2]);
+        d = (float) atof(argv[3]);
     }
 
     printf("\n\nHow to use this application:\n\n");

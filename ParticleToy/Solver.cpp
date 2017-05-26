@@ -10,7 +10,7 @@
 #define RAND (((rand()%2000)/1000.f)-1.f)
 
 void simulation_step(std::vector<Particle *> pVector, float dt) {
-    int ii, size = pVector.size();
+    int ii, size;
 
     // List of all the forces.
     std::vector<Force*> fl;
@@ -23,6 +23,7 @@ void simulation_step(std::vector<Particle *> pVector, float dt) {
         fl[ii]->calc_Force();
     }
 
+    size = pVector.size();
     for (ii = 0; ii < size; ii++) {
 
         pVector[ii]->m_Position += dt * pVector[ii]->m_Velocity;
