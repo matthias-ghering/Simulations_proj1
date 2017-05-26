@@ -5,7 +5,7 @@
 #ifndef SIMULATION_1_FORCE_H
 #define SIMULATION_1_FORCE_H
 #include <gfx/vec2.h>
-#include "Particle.h"
+#include "../Particle.h"
 
 class Force {
 

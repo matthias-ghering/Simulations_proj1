@@ -7,7 +7,7 @@
 
 
 #include "Force.h"
-#include "Particle.h"
+#include "../Particle.h"
 
 class GravityForce : public Force {
 

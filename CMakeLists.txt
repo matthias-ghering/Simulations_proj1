@@ -17,24 +17,24 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}
 
 
 set(SOURCE_FILES
-        ParticleToy/CircularWireConstraint.cpp
-        ParticleToy/CircularWireConstraint.h
+        ParticleToy/constraints/CircularWireConstraint.cpp
+        ParticleToy/constraints/CircularWireConstraint.h
         ParticleToy/linearSolver.cpp
         ParticleToy/linearSolver.h
         ParticleToy/Particle.cpp
         ParticleToy/Particle.h
         ParticleToy/ParticleToy.cpp
-        ParticleToy/RodConstraint.cpp
-        ParticleToy/RodConstraint.h
+        ParticleToy/constraints/RodConstraint.cpp
+        ParticleToy/constraints/RodConstraint.h
         ParticleToy/Solver.cpp
-        ParticleToy/SpringForce.cpp
-        ParticleToy/SpringForce.h
-        ParticleToy/Force.cpp
-        ParticleToy/Force.h
-        ParticleToy/GravityForce.cpp
-        ParticleToy/GravityForce.h
-        ParticleToy/Constraint.cpp
-        ParticleToy/Constraint.h
+        ParticleToy/forces/SpringForce.cpp
+        ParticleToy/forces/SpringForce.h
+        ParticleToy/forces/Force.cpp
+        ParticleToy/forces/Force.h
+        ParticleToy/forces/GravityForce.cpp
+        ParticleToy/forces/GravityForce.h
+        ParticleToy/constraints/Constraint.cpp
+        ParticleToy/constraints/Constraint.h
         )
 
 find_package (OpenGL REQUIRED)

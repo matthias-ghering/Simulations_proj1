@@ -2,10 +2,10 @@
 //
 
 #include "Particle.h"
-#include "SpringForce.h"
-#include "RodConstraint.h"
-#include "CircularWireConstraint.h"
-#include "GravityForce.h"
+#include "forces/SpringForce.h"
+#include "constraints/RodConstraint.h"
+#include "constraints/CircularWireConstraint.h"
+#include "forces/GravityForce.h"
 
 #include <vector>
 #include <stdlib.h>

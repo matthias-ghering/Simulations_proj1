@@ -1,10 +1,10 @@
 #include "Particle.h"
 
 #include <vector>
-#include "Force.h"
-#include "GravityForce.h"
-#include "SpringForce.h"
-#include "Constraint.h"
+#include "forces/Force.h"
+#include "forces/GravityForce.h"
+#include "forces/SpringForce.h"
+#include "constraints/Constraint.h"
 
 #define DAMP 0.98f
 #define RAND (((rand()%2000)/1000.f)-1.f)

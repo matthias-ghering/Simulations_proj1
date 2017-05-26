@@ -6,8 +6,8 @@
 #define SIMULATION_1_CONSTRAINTFORCE_H
 
 
-#include "Force.h"
-#include "Particle.h"
+#include "../forces/Force.h"
+#include "../Particle.h"
 
 class Constraint : public Force {
 
