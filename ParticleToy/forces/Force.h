@@ -10,10 +10,9 @@
 class Force {
 
 public:
-    Force();
 
-    virtual void calc_Force();
-    virtual void draw();
+    virtual void calc_Force() = 0;
+    virtual void draw() = 0;
 
 };
 

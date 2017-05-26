@@ -2,25 +2,23 @@
 // Created by Matthias Ghering on 23-5-2017.
 //
 
-#ifndef SIMULATION_1_CONSTRAINTFORCE_H
-#define SIMULATION_1_CONSTRAINTFORCE_H
+#ifndef SIMULATION_1_CONSTRAINT_H
+#define SIMULATION_1_CONSTRAINT_H
 
 
-#include "../forces/Force.h"
-#include "../Particle.h"
+#include <vector>
 
-class Constraint : public Force {
+class Constraint {
 
 public:
     Constraint();
 
-    //virtual getC();
-    //virtual getCdot();
-    //virtual getJ();
-    //virtual getJdot();
-
+    virtual float getC() = 0;
+    virtual float getCdot() = 0;
+    virtual std::vector<Vec2f> getJ() = 0;
+    virtual std::vector<Vec2f> getJdot() = 0;
 
 };
 
 
-#endif //SIMULATION_1_CONSTRAINTFORCE_H
+#endif //SIMULATION_1_CONSTRAINT_H

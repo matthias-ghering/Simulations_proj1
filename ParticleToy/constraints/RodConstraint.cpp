@@ -7,6 +7,21 @@ RodConstraint::RodConstraint(Particle *p1, Particle *p2, double dist) :
 
 }
 
+float RodConstraint:: getC() {
+}
+
+float RodConstraint::getCdot() {
+
+}
+
+std::vector<Vec2f> RodConstraint::getJ() {
+
+}
+
+std::vector<Vec2f> RodConstraint::getJdot() {
+
+}
+
 void RodConstraint::draw() {
     glBegin(GL_LINES);
     glColor3f(0.8, 0.7, 0.6);
@@ -14,9 +29,5 @@ void RodConstraint::draw() {
     glColor3f(0.8, 0.7, 0.6);
     glVertex2f(m_p2->m_Position[0], m_p2->m_Position[1]);
     glEnd();
-
-}
-
-void RodConstraint::calc_Force(){
 
 }

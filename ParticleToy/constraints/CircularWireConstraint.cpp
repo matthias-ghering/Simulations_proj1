@@ -16,6 +16,21 @@ static void draw_circle(const Vec2f &vect, double radius) {
 CircularWireConstraint::CircularWireConstraint(Particle *p, const Vec2f &center, const double radius) :
         m_p(p), m_center(center), m_radius(radius) {}
 
+float CircularWireConstraint:: getC() {
+}
+
+float CircularWireConstraint::getCdot() {
+
+}
+
+std::vector<Vec2f> CircularWireConstraint::getJ() {
+
+}
+
+std::vector<Vec2f> CircularWireConstraint::getJdot() {
+
+}
+
 void CircularWireConstraint::draw() {
     draw_circle(m_center, m_radius);
 }

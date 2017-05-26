@@ -29,11 +29,9 @@ set(SOURCE_FILES
         ParticleToy/Solver.cpp
         ParticleToy/forces/SpringForce.cpp
         ParticleToy/forces/SpringForce.h
-        ParticleToy/forces/Force.cpp
         ParticleToy/forces/Force.h
         ParticleToy/forces/GravityForce.cpp
         ParticleToy/forces/GravityForce.h
-        ParticleToy/constraints/Constraint.cpp
         ParticleToy/constraints/Constraint.h
         )
 
