@@ -18,6 +18,11 @@ void simulation_step(std::vector<Particle *> pVector, float dt) {
     fl.push_back(new GravityForce(pVector[1]));
     fl.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
 
+    size = fl.size();
+    for(ii=0; ii < size; ii++){
+        fl[ii]->calc_Force();
+    }
+
     for (ii = 0; ii < size; ii++) {
 
         pVector[ii]->m_Position += dt * pVector[ii]->m_Velocity;
@@ -28,12 +33,9 @@ void simulation_step(std::vector<Particle *> pVector, float dt) {
         pVector[ii]->m_Force = Vec2f(0.0,0.0);
     }
 
-    size = fl.size();
-    for(ii=0; ii < size; ii++){
-        fl[ii]->calc_Force();
-    }
+    printf("pos: (%f, %f)\tvel: (%f, %f)\n",
+           pVector[0]->m_Position[0], pVector[0]->m_Position[1], pVector[0]->m_Velocity[0], pVector[0]->m_Velocity[1]);
     //ConstraintForce* cf = new ConstraintForce();
-
 
 }
 

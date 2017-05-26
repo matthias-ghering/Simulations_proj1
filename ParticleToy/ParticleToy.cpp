@@ -72,11 +72,9 @@ static void clear_data(void) {
 }
 
 static void init_system(void) {
-    const double dist = 0.2;
+    const float dist = 0.2;
     const Vec2f center(0.0, 0.0);
     const Vec2f offset(dist, 0.0);
-
-    std::cerr << "Hallo" << std::endl;
 
     // Create three particles, attach them to each other, then add a
     // circular wire constraint to the first.
@@ -86,9 +84,7 @@ static void init_system(void) {
     pVector.push_back(new Particle(center + offset + offset + offset));
     pVector.push_back(p1);
 
-    Force* gravityForce = new GravityForce(p1);
-
-    // You shoud replace these with a vector generalized forces and one of
+    // You should replace these with a vector generalized forces and one of
     // constraints...
     delete_this_dummy_spring = new SpringForce(pVector[0], pVector[1], dist, 1.0, 1.0);
     //delete_this_dummy_rod = new RodConstraint(pVector[1], pVector[2], dist);
@@ -338,7 +334,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.1f;
+        dt = 0.02f;
         d = 5.f;
         fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
                 N, dt, d);

@@ -9,5 +9,5 @@ GravityForce::GravityForce(Particle *p1) : Force() {
 }
 
 void GravityForce::calc_Force() {
-    m_p1->m_Force += Vec2f(0,-0.000981);
+    m_p1->m_Force += Vec2f(0, (float) -0.0009807);
 }
