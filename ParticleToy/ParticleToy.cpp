@@ -15,7 +15,7 @@
 /* macros */
 
 /* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> pVector, float dt);
+extern void simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, float dt);
 
 /* global variables */
 
@@ -25,8 +25,9 @@ static int dsim;
 static int dump_frames;
 static int frame_number;
 
-// static Particle *pList;
+//Particle and Force vectors
 static std::vector<Particle *> pVector;
+static std::vector<Force *> fVector;
 
 static int win_id;
 static int win_x, win_y;
@@ -82,11 +83,13 @@ static void init_system(void) {
     pVector.push_back(new Particle(center + offset));
     pVector.push_back(new Particle(center + offset + offset));
     pVector.push_back(new Particle(center + offset + offset + offset));
-    pVector.push_back(p1);
+    //pVector.push_back(p1);
 
-    // You should replace these with a vector generalized forces and one of
-    // constraints...
-    delete_this_dummy_spring = new SpringForce(pVector[0], pVector[1], dist, 1.0, 1.0);
+
+    fVector.push_back(new GravityForce(pVector[1]));
+    fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
+    fVector.push_back(new SpringForce(pVector[2],pVector[1], 0.4 , 0.1, 0.01));
+
     //delete_this_dummy_rod = new RodConstraint(pVector[1], pVector[2], dist);
     //delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
 }
@@ -141,8 +144,12 @@ static void draw_particles(void) {
 
 static void draw_forces(void) {
     // change this to iteration over full set
-    if (delete_this_dummy_spring)
-        delete_this_dummy_spring->draw();
+    int size = fVector.size();
+    for (int ii = 0; ii < size; ii++) {
+        fVector[ii]->draw();
+    }
+
+
 }
 
 static void draw_constraints(void) {
@@ -256,7 +263,7 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-    if (dsim) simulation_step(pVector, dt);
+    if (dsim) simulation_step(pVector, fVector, dt);
     else {
         get_from_UI();
         remap_GUI();
