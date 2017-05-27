@@ -1,7 +1,7 @@
 
 #include "ConstraintSolver.h"
 
-void ConstraintSolver::init(std::vector<Particle *> particles) {
+void ConstraintSolver::init(std::vector<Particle *> particles, std::vector<Constraint *> constraints) {
     for (int i = 0; i < particles.size(); i++) {
 
         // Set position vector
@@ -33,9 +33,10 @@ void ConstraintSolver::reset() {
 }
 
 void ConstraintSolver::applyConstraints(std::vector<Particle *> particles, std::vector<Constraint *> constraints) {
-    this->init(particles);
+    this->init(particles, constraints);
 
     // Apply constraints
+
 
     this->reset();
 }
