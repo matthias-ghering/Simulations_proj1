@@ -6,6 +6,7 @@
 #include "constraints/RodConstraint.h"
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
+#include <iostream>
 
 #include <vector>
 #include <stdlib.h>
@@ -73,6 +74,15 @@ static void init_system(void) {
     const Vec2f center(0.0, 0.0);
     const Vec2f offset(dist, 0.0);
 
+    //size of cloth
+    int x_=4;
+    int y_=3;
+
+    //spring variables
+    const float ks = 0.1;
+    const float kd = 0.01;
+
+    /*
     // Create three particles, attach them to each other, then add a
     // circular wire constraint to the first.
     Particle* p1 = new Particle(center + offset + offset + offset + offset);
@@ -85,6 +95,40 @@ static void init_system(void) {
     fVector.push_back(new GravityForce(pVector[1]));
     fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
     fVector.push_back(new SpringForce(pVector[2],pVector[1], 0.4 , 0.1, 0.01));
+    */
+
+    //cloth uses center as lower left corner
+
+    for (int i = 0; i < x_; i++) {
+        for (int j = 0; j < y_; j++) {
+            //add particle
+            pVector.push_back(new Particle(center + Vec2f(dist*i,dist*j)));
+            //add gravity
+            fVector.push_back(new GravityForce(pVector[j+i*y_]));
+        }
+    }
+
+    //add vertical structural springs
+    for (int i = 0; i < x_; i++) {
+        for (int j = 0; j < y_-1; j++) {
+            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+1], dist , ks, kd));
+        }
+    }
+
+    //add horizontal structural springs
+    for (int i = 0; i < x_-1; i++) {
+        for (int j = 0; j < y_; j++) {
+            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+y_], dist , ks, kd));
+        }
+    }
+
+    //add shear springs
+    for (int i = 0; i < x_-1; i++) {
+        for (int j = 0; j < y_-1; j++) {
+            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+y_+1], sqrt(pow(dist,2)*2) , ks, kd));
+            fVector.push_back(new SpringForce(pVector[j+i*y_+1],pVector[(j+i*y_)+y_], sqrt(pow(dist,2)*2) , ks, kd));
+        }
+    }
 
     //delete_this_dummy_rod = new RodConstraint(pVector[1], pVector[2], dist);
     //delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
@@ -338,7 +382,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.02f;
+        dt = 0.2f;
         d = 5.f;
         fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
                 N, dt, d);
