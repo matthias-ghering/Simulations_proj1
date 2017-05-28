@@ -28,8 +28,8 @@ void ConstraintSolver::init(std::vector<Particle *> particles, std::vector<Const
         );
     }
 
-    this->J = new SparseMatrix(particles.size() * 2, constraints.size());
-    this->JT = new SparseMatrix(constraints.size(), particles.size() * 2);
+    this->J = new SparseMatrix(constraints.size(), particles.size() * 2);
+    this->JT = new SparseMatrix(particles.size() * 2, constraints.size());
     this->Jdot = new SparseMatrix(constraints.size(), particles.size() * 2);
     this->C = new SparseMatrix(constraints.size(), 1);
     this->Cdot = new SparseMatrix(constraints.size(), 1);
@@ -40,14 +40,14 @@ void ConstraintSolver::init(std::vector<Particle *> particles, std::vector<Const
         this->Cdot->setValue(i, 0, constraints[i]->getCdot());
 
         // Set Jacobians
-        for (int j = 0; j < constraints[i]->particles.size(); i++) {
+        for (int j = 0; j < constraints[i]->particles.size(); j++) {
             int pIndex = constraints[i]->particles[j]->index;
             // Set value at J[particle.x][constraint] and JT[particle.y][constraint]
-            this->J->setValue(pIndex * 2 + 0, i, constraints[i]->getJ()[j][0]);
-            this->J->setValue(pIndex * 2 + 1, i, constraints[i]->getJ()[j][1]);
+            this->J->setValue(i, pIndex * 2 + 0, constraints[i]->getJ()[j][0]);
+            this->J->setValue(i, pIndex * 2 + 1, constraints[i]->getJ()[j][1]);
             // Set value at JT[constraint][particle.x] and J[constraint][particle.y]
-            this->JT->setValue(i, pIndex * 2 + 0, constraints[i]->getJ()[j][0]);
-            this->JT->setValue(i, pIndex * 2 + 1, constraints[i]->getJ()[j][1]);
+            this->JT->setValue(pIndex * 2 + 0, i, constraints[i]->getJ()[j][0]);
+            this->JT->setValue(pIndex * 2 + 1, i, constraints[i]->getJ()[j][1]);
             // Set value at Jdot[constraint][particle.x] and Jdot[constraint][particle.y]
             this->Jdot->setValue(i, pIndex * 2 + 0, constraints[i]->getJdot()[j][0]);
             this->Jdot->setValue(i, pIndex * 2 + 1, constraints[i]->getJdot()[j][1]);
@@ -63,18 +63,18 @@ void ConstraintSolver::reset() {
     this->qdot.clear();
     this->Q.clear();
 
-    free(this->C);
-    free(this->Cdot);
-    free(this->J);
-    free(this->JT);
-    free(this->Jdot);
+    //free(this->C);
+    //free(this->Cdot);
+    //free(this->J);
+    //free(this->JT);
+    //free(this->Jdot);
 }
 
 void ConstraintSolver::applyConstraints(std::vector<Particle *> particles, std::vector<Constraint *> constraints) {
     this->init(particles, constraints);
 
     // Apply constraints
-    SparseMatrix* JW = new SparseMatrix(particles.size() * 2, constraints.size());
+    SparseMatrix* JW = new SparseMatrix(constraints.size(), particles.size() * 2);
 
     int wIndex = 0;
     for (int i = 0; i < this->J->getRowCount(); i++) {
@@ -100,23 +100,19 @@ void ConstraintSolver::applyConstraints(std::vector<Particle *> particles, std::
 
     SparseMatrix* lambdaT = new SparseMatrix(constraints.size(), 1);
     for (int i = 0; i < constraints.size(); i++) {
-        lambdaT->setValue(i, 0, (float) lambdaTarray[i]);
+        lambdaT->setValue(i, 0, lambdaTarray[i]);
     }
 
-    SparseMatrix QhatT = (*lambdaT) * (*this->JT);
+    SparseMatrix QhatT = (*this->JT) * (*lambdaT);
 
     for (int i = 0; i < particles.size(); i++) {
-        particles[i]->m_Force[0] += QhatT.getValue(i, 0);
-        particles[i]->m_Force[1] += QhatT.getValue(i, 1);
+        particles[i]->m_Force[0] += QhatT.getValue(2 * i + 0, 0);
+        particles[i]->m_Force[1] += QhatT.getValue(2 * i + 1, 0);
     }
 
-    free(&rhs);
     free(JW);
-    free(&JWJT);
-    free(&Jdotqdot);
     free(lambdaT);
     free(lambdaTarray);
-    free(&QhatT);
 
     this->reset();
 }

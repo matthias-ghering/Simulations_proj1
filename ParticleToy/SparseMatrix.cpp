@@ -9,11 +9,18 @@
  */
 
 SparseMatrix::SparseMatrix() {
-    this->data = std::vector<std::vector<float>> (0, std::vector<float> (0));
+    this->data = std::vector<std::vector<double>> (0);
 }
 
 SparseMatrix::SparseMatrix(size_t rows, size_t columns) {
-    this->data = std::vector<std::vector<float>> (rows, std::vector<float> (columns));
+    for (int i = 0; i < rows; i++) {
+        std::vector<double> col;
+        for (int j = 0; j < columns; j++) {
+            col.push_back(0);
+        }
+        this->data.push_back(col);
+    }
+    //this->data = std::vector<std::vector<double>> (rows, std::vector<double> (columns, 0));
 }
 
 int SparseMatrix::getRowCount() {
@@ -24,11 +31,11 @@ int SparseMatrix::getColCount() {
     return this->data[0].size();
 }
 
-float SparseMatrix::getValue(int row, int column) {
+double SparseMatrix::getValue(int row, int column) {
     return this->data[row][column];
 }
 
-void SparseMatrix::setValue(int row, int column, float data) {
+void SparseMatrix::setValue(int row, int column, double data) {
     this->data[row][column] = data;
 }
 
@@ -59,7 +66,7 @@ SparseMatrix operator- (SparseMatrix left, SparseMatrix right) {
     return *result;
 }
 
-SparseMatrix operator* (SparseMatrix m, float f) {
+SparseMatrix operator* (SparseMatrix m, double f) {
     SparseMatrix* result = new SparseMatrix(
             (size_t) m.getRowCount(), (size_t) m.getColCount()
     );
@@ -79,19 +86,17 @@ SparseMatrix operator* (SparseMatrix m, std::vector<Vec2f> v) {
     }
 
     SparseMatrix* result = new SparseMatrix(
-            v.size() * 2, 1
+            (size_t) m.getRowCount(), 1
     );
 
     for (int i = 0; i < m.getRowCount(); i++) {
-        float x = 0, y = 0;
-        int j;
-        for (j = 0; j < v.size(); j++) {
+        double x = 0;
+        for (int j = 0; j < v.size(); j++) {
             x += m.getValue(i, 2 * j + 0) * v[j][0];
-            y += m.getValue(i, 2 * j + 1) * v[j][1];
+            x += m.getValue(i, 2 * j + 1) * v[j][1];
         }
 
-        result->setValue(2 * j + 0, 0, x);
-        result->setValue(2 * j + 1, 0, y);
+        result->setValue(i, 0, x);
     }
 
     return *result;

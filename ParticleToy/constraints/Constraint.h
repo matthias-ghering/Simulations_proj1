@@ -11,10 +11,12 @@
 class Constraint {
 
 public:
-    virtual float getC() = 0;
-    virtual float getCdot() = 0;
+    virtual double getC() = 0;
+    virtual double getCdot() = 0;
     virtual std::vector<Vec2f> getJ() = 0;
     virtual std::vector<Vec2f> getJdot() = 0;
+
+    virtual void draw() = 0;
 
     std::vector<Particle *> particles;
 };

@@ -15,7 +15,7 @@
 /* macros */
 
 /* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, float dt);
+extern void simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector, float dt);
 
 /* global variables */
 
@@ -28,6 +28,7 @@ static int frame_number;
 //Particle and Force vectors
 static std::vector<Particle *> pVector;
 static std::vector<Force *> fVector;
+static std::vector<Constraint *> cVector;
 
 static int win_id;
 static int win_x, win_y;
@@ -50,14 +51,7 @@ free/clear/allocate simulation data
 static void free_data(void) {
     pVector.clear();
     fVector.clear();
-    if (delete_this_dummy_rod) {
-        delete delete_this_dummy_rod;
-        delete_this_dummy_rod = NULL;
-    }
-    if (delete_this_dummy_wire) {
-        delete delete_this_dummy_wire;
-        delete_this_dummy_wire = NULL;
-    }
+    cVector.clear();
 }
 
 static void clear_data(void) {
@@ -75,18 +69,21 @@ static void init_system(void) {
 
     // Create three particles, attach them to each other, then add a
     // circular wire constraint to the first.
-    Particle* p1 = new Particle(center + offset + offset + offset + offset);
+    //Particle* p1 = new Particle(center + offset + offset + offset + offset);
     pVector.push_back(new Particle(center + offset));
     pVector.push_back(new Particle(center + offset + offset));
     pVector.push_back(new Particle(center + offset + offset + offset));
     //pVector.push_back(p1);
 
 
+    fVector.push_back(new GravityForce(pVector[0]));
     fVector.push_back(new GravityForce(pVector[1]));
-    fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
-    fVector.push_back(new SpringForce(pVector[2],pVector[1], 0.4 , 0.1, 0.01));
+    fVector.push_back(new GravityForce(pVector[2]));
+    //fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
+    //fVector.push_back(new SpringForce(pVector[2],pVector[1], 0.4 , 0.1, 0.01));
 
     //delete_this_dummy_rod = new RodConstraint(pVector[1], pVector[2], dist);
+    cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
     //delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
 }
 
@@ -149,11 +146,9 @@ static void draw_forces(void) {
 }
 
 static void draw_constraints(void) {
-    // change this to iteration over full set
-    if (delete_this_dummy_rod)
-        delete_this_dummy_rod->draw();
-    if (delete_this_dummy_wire)
-        delete_this_dummy_wire->draw();
+    for (int i = 0; i < cVector.size(); i++) {
+        cVector[i]->draw();
+    }
 }
 
 /*
@@ -259,7 +254,7 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-    if (dsim) simulation_step(pVector, fVector, dt);
+    if (dsim) simulation_step(pVector, fVector, cVector, dt);
     else {
         get_from_UI();
         remap_GUI();

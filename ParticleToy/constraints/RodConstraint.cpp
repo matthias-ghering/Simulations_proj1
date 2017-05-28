@@ -7,10 +7,10 @@ RodConstraint::RodConstraint(Particle *p1, Particle *p2, double dist) :
     this->particles.push_back(p2);
 }
 
-float RodConstraint:: getC() {
+double RodConstraint:: getC() {
 }
 
-float RodConstraint::getCdot() {
+double RodConstraint::getCdot() {
 
 }
 

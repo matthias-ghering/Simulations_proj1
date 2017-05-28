@@ -18,20 +18,19 @@ public:
     SparseMatrix();
     SparseMatrix(size_t rows, size_t columns);
 
-    float getValue(int row, int column);
-    void setValue(int row, int column, float data);
+    double getValue(int row, int column);
+    void setValue(int row, int column, double data);
     int getRowCount();
     int getColCount();
 
     void matVecMult(double x[], double r[]);
 
     friend SparseMatrix operator- (SparseMatrix left, SparseMatrix right);
-    friend SparseMatrix operator* (SparseMatrix m, float f);
+    friend SparseMatrix operator* (SparseMatrix m, double f);
     friend SparseMatrix operator* (SparseMatrix m, std::vector<Vec2f> v);
     friend SparseMatrix operator* (SparseMatrix left, SparseMatrix right);
 private:
-
-    std::vector<std::vector<float>> data;
+    std::vector<std::vector<double>> data;
 };
 
 

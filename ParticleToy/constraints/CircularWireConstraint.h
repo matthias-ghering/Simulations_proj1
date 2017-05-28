@@ -4,11 +4,11 @@
 #include "../Particle.h"
 #include "Constraint.h"
 
-class CircularWireConstraint : Constraint {
+class CircularWireConstraint : public Constraint {
 public:
     CircularWireConstraint(Particle *p, const Vec2f &center, const double radius);
-    float getC() override ;
-    float getCdot() override ;
+    double getC() override ;
+    double getCdot() override ;
     std::vector<Vec2f> getJ() override ;
     std::vector<Vec2f> getJdot() override ;
     void draw();

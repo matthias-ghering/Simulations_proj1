@@ -18,20 +18,26 @@ CircularWireConstraint::CircularWireConstraint(Particle *p, const Vec2f &center,
     this->particles.push_back(p);
 }
 
-float CircularWireConstraint:: getC() {
-
+double CircularWireConstraint::getC() {
+    Vec2f diff = particles[0]->m_Position - this->m_center;
+    return (diff * diff) - (this->m_radius * this->m_radius);
 }
 
-float CircularWireConstraint::getCdot() {
-
+double CircularWireConstraint::getCdot() {
+    Vec2f diff = particles[0]->m_Position - this->m_center;
+    return (2 * diff) * particles[0]->m_Velocity;
 }
 
 std::vector<Vec2f> CircularWireConstraint::getJ() {
-
+    std::vector<Vec2f> result;
+    result.push_back(2 * (particles[0]->m_Position - this->m_center));
+    return result;
 }
 
 std::vector<Vec2f> CircularWireConstraint::getJdot() {
-
+    std::vector<Vec2f> result;
+    result.push_back(2 * particles[0]->m_Velocity);
+    return result;
 }
 
 void CircularWireConstraint::draw() {

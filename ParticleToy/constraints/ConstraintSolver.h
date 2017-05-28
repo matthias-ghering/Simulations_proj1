@@ -18,7 +18,7 @@ private:
     void init(std::vector<Particle *> particles,std::vector<Constraint *> constraints);
     void reset();
 
-    float ks = 0.98;
+    float ks = 0.97;
     float kd = 0.98;
 
     // Particle position vector
