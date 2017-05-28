@@ -15,6 +15,8 @@ public:
     virtual float getCdot() = 0;
     virtual std::vector<Vec2f> getJ() = 0;
     virtual std::vector<Vec2f> getJdot() = 0;
+
+    std::vector<Particle *> particles;
 };
 
 

@@ -3,8 +3,8 @@
 
 RodConstraint::RodConstraint(Particle *p1, Particle *p2, double dist) :
         m_p1(p1), m_p2(p2), m_dist(dist) {
-    //Constraint();
-
+    this->particles.push_back(p1);
+    this->particles.push_back(p2);
 }
 
 float RodConstraint:: getC() {

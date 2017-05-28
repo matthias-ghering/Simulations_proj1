@@ -8,14 +8,18 @@
 #include <vector>
 #include "../Particle.h"
 #include "Constraint.h"
+#include "../SparseMatrix.h"
 
 class ConstraintSolver {
 public:
     void applyConstraints(std::vector<Particle *> particles, std::vector<Constraint *> constraints);
 
 private:
-    void init(std::vector<Particle *> particles, std::vector<Constraint *> constraints);
+    void init(std::vector<Particle *> particles,std::vector<Constraint *> constraints);
     void reset();
+
+    float ks = 0.98;
+    float kd = 0.98;
 
     // Particle position vector
     std::vector<Vec2f> q;
@@ -27,10 +31,22 @@ private:
     std::vector<Vec2f> qddot;
 
     // Particle inverse mass vector
-    std::vector<Vec2f> W;
+    std::vector<float> W;
 
     // Particle force vector
     std::vector<Vec2f> Q;
+
+    // Constraint evaluation vector
+    SparseMatrix* C;
+
+    // Constraint derivative evaluation vector
+    SparseMatrix* Cdot;
+
+    SparseMatrix* J;
+
+    SparseMatrix* Jdot;
+
+    SparseMatrix* JT;
 
 };
 
