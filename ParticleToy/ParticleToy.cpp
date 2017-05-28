@@ -8,6 +8,7 @@
 #include "GravityForce.h"
 #include "Solver.h"
 #include "EulerianSolver.h"
+#include "MidPointSolver.h"
 
 #include <vector>
 #include <stdlib.h>
@@ -262,7 +263,9 @@ static void reshape_func(int width, int height) {
 
 static void idle_func(void) {
     if (dsim){
+
         Solver* solver = new EulerianSolver();
+        //Solver* solver = new MidPointSolver();
         solver->simulation_step(pVector, fVector, dt);
     }
     else {
@@ -343,7 +346,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.02f;
+        dt = 0.2f;
         d = 5.f;
         fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
                 N, dt, d);
