@@ -132,9 +132,9 @@ static void post_display(void) {
 
 static void draw_particles(void) {
     int size = pVector.size();
-
     for (int i = 0; i < size; i++) {
         pVector[i]->draw();
+        std::cout << i << "  " << pVector[i]->m_Position << "\n ";
     }
 }
 
@@ -243,11 +243,42 @@ static void mouse_func(int button, int state, int x, int y) {
     if (mouse_down[button]) mouse_release[button] = state == GLUT_UP;
     if (mouse_down[button]) mouse_shiftclick[button] = glutGetModifiers() == GLUT_ACTIVE_SHIFT;
     mouse_down[button] = state == GLUT_DOWN;
+
+    //create particle
+    if (mouse_down[0]==1) {
+        const float dist = 0.4;
+
+        float loc_x = (float)mx/(float)win_x*2.0-1.0;
+        float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
+
+        const Vec2f place(loc_x,loc_y);
+        const Vec2f offset(dist, 0);
+
+        pVector.push_back(new Particle(place));
+        pVector.push_back(new Particle(place + offset));
+
+        fVector.push_back(new GravityForce(pVector.back()));
+        fVector.push_back(new SpringForce(pVector.back(), pVector.end()[-2], 0.4, 0.1, 0.01));
+    }
+    if (mouse_down[0]==0) {
+        pVector.pop_back();
+        pVector.pop_back();
+        fVector.pop_back();
+        fVector.pop_back();
+    }
+
+
+
 }
 
 static void motion_func(int x, int y) {
     mx = x;
     my = y;
+
+    float loc_x = (float)mx/(float)win_x*2.0-1.0;
+    float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
+
+    pVector.end()[-2]->m_Position =  Vec2f(loc_x,loc_y) ;
 }
 
 static void reshape_func(int width, int height) {
