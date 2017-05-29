@@ -8,6 +8,16 @@ Particle::Particle(const Vec2f &ConstructPos) :
 Particle::~Particle(void) {
 }
 
+Particle* Particle::copy() {
+    Particle *p = new Particle(m_ConstructPos);
+    p->m_Position = m_Position;
+    p->m_Velocity = m_Velocity;
+    p->m_Force = m_Force;
+    p->m_Mass = m_Mass;
+    return p;
+
+}
+
 void Particle::reset() {
     m_Position = m_ConstructPos;
     m_Velocity = Vec2f(0.0, 0.0);

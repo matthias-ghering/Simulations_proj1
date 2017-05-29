@@ -8,6 +8,8 @@
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
 #include "EulerianSolver.h"
+#include "ForwardEulerianSolver.h"
+#include "MidPointSolver.h"
 
 #include <GL/glut.h>
 
@@ -253,8 +255,9 @@ static void reshape_func(int width, int height) {
 static void idle_func(void) {
     if (dsim){
 
-        Solver* solver = new EulerianSolver();
-        //Solver* solver = new MidPointSolver();
+        //Solver* solver = new EulerianSolver();
+        //Solver* solver = new ForwardEulerianSolver();
+        Solver* solver = new MidPointSolver();
         solver->simulation_step(pVector, fVector, cVector, dt);
     }
     else {
@@ -335,7 +338,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.2f;
+        dt = 0.02f;
         d = 5.f;
         fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
                 N, dt, d);

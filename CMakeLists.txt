@@ -29,6 +29,8 @@ set(SOURCE_FILES
         ParticleToy/Solver.cpp
         ParticleToy/EulerianSolver.cpp
         ParticleToy/EulerianSolver.h
+        ParticleToy/ForwardEulerianSolver.cpp
+        ParticleToy/ForwardEulerianSolver.h
         ParticleToy/MidPointSolver.cpp
         ParticleToy/MidPointSolver.h
         ParticleToy/forces/Force.h

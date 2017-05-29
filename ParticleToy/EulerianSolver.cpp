@@ -5,6 +5,10 @@
 #include "EulerianSolver.h"
 #include "constraints/ConstraintSolver.h"
 
+/**
+ * This Solver is currently replaced by the ForwardEulerianSolver that matches the formula's.
+ * This Solver can later be refactored to a ImplicitEulerianSolver should that be necessary
+ */
 EulerianSolver::EulerianSolver():Solver(){}
 
 void EulerianSolver::simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector,float dt) {
@@ -24,7 +28,6 @@ void EulerianSolver::simulation_step(std::vector<Particle *> pVector, std::vecto
         Vec2f a = pVector[i]->m_Force / pVector[i]->m_Mass;
         pVector[i]->m_Velocity = DAMP * pVector[i]->m_Velocity + a*dt;
         pVector[i]->m_Position += dt * pVector[i]->m_Velocity;
-
 
         //Reset all the forces on particles
         pVector[i]->m_Force = Vec2f(0.0,0.0);
