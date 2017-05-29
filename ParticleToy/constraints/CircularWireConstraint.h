@@ -11,10 +11,9 @@ public:
     double getCdot() override ;
     std::vector<Vec2f> getJ() override ;
     std::vector<Vec2f> getJdot() override ;
-    void draw();
+    void draw() override;
 
 private:
-    Particle *const m_p;
     Vec2f const m_center;
     double const m_radius;
 };

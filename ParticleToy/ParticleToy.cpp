@@ -7,9 +7,6 @@
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
 
-#include <vector>
-#include <stdlib.h>
-#include <stdio.h>
 #include <GL/glut.h>
 
 /* macros */
@@ -37,9 +34,6 @@ static int mouse_release[3];
 static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
-
-static RodConstraint *delete_this_dummy_rod = NULL;
-static CircularWireConstraint *delete_this_dummy_wire = NULL;
 
 
 /*
@@ -84,6 +78,7 @@ static void init_system(void) {
 
     //delete_this_dummy_rod = new RodConstraint(pVector[1], pVector[2], dist);
     cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+    cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
     //delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
 }
 
