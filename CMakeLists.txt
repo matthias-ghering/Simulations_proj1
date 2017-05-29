@@ -17,26 +17,30 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}
 
 
 set(SOURCE_FILES
-        ParticleToy/CircularWireConstraint.cpp
-        ParticleToy/CircularWireConstraint.h
+        ParticleToy/constraints/RodConstraint.cpp
+        ParticleToy/constraints/RodConstraint.h
+        ParticleToy/constraints/CircularWireConstraint.cpp
+        ParticleToy/constraints/CircularWireConstraint.h
         ParticleToy/linearSolver.cpp
         ParticleToy/linearSolver.h
         ParticleToy/Particle.cpp
         ParticleToy/Particle.h
         ParticleToy/ParticleToy.cpp
-        ParticleToy/RodConstraint.cpp
-        ParticleToy/RodConstraint.h
         ParticleToy/Solver.cpp
-        ParticleToy/SpringForce.cpp
-        ParticleToy/SpringForce.h
-        ParticleToy/Force.cpp
-        ParticleToy/Force.h
-        ParticleToy/GravityForce.cpp
-        ParticleToy/GravityForce.h
-        ParticleToy/ConstraintForce.cpp
-        ParticleToy/ConstraintForce.h
         ParticleToy/EulerianSolver.cpp
-        ParticleToy/EulerianSolver.h ParticleToy/MidPointSolver.cpp ParticleToy/MidPointSolver.h)
+        ParticleToy/EulerianSolver.h
+        ParticleToy/MidPointSolver.cpp
+        ParticleToy/MidPointSolver.h
+        ParticleToy/forces/Force.h
+        ParticleToy/forces/SpringForce.cpp
+        ParticleToy/forces/SpringForce.h
+        ParticleToy/forces/GravityForce.cpp
+        ParticleToy/forces/GravityForce.h
+        ParticleToy/constraints/Constraint.h
+        ParticleToy/constraints/ConstraintSolver.h
+        ParticleToy/constraints/ConstraintSolver.cpp
+        ParticleToy/SparseMatrix.cpp
+        ParticleToy/SparseMatrix.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)

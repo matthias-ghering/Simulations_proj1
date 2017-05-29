@@ -7,7 +7,7 @@
 
 MidPointSolver::MidPointSolver() : Solver(){}
 
-void MidPointSolver::simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, float dt) {
+void MidPointSolver::simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector, float dt) {
     //Eulerian step
     //EulerianSolver* eulerianSolver = new EulerianSolver();
     //eulerianSolver->simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, float dt)

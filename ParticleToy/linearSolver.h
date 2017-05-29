@@ -26,7 +26,7 @@ public:
 
 
 // Solve Ax = b for a symmetric, positive definite matrix A
-// A is represented implicitely by the function "matVecMult"
+// A is represented implicitly by the function "matVecMult"
 // which performs a matrix vector multiple Av and places result in r
 // "n" is the length of the vectors x and b
 // "epsilon" is the error tolerance

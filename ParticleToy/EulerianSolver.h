@@ -10,7 +10,7 @@
 class EulerianSolver : public Solver {
 public:
     EulerianSolver();
-    void simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, float dt) override;
+    void simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector, float dt) override;
 };
 
 
