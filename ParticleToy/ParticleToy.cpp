@@ -10,6 +10,8 @@
 #include "EulerianSolver.h"
 #include "ForwardEulerianSolver.h"
 #include "MidPointSolver.h"
+#include "EulerianVecSolver.h"
+#include "forces/DampeningForce.h"
 
 #include <GL/glut.h>
 
@@ -38,7 +40,7 @@ static int mouse_release[3];
 static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
-
+static Solver* solver = new ForwardEulerianSolver();
 
 /*
 ----------------------------------------------------------------------
@@ -77,6 +79,10 @@ static void init_system(void) {
     fVector.push_back(new GravityForce(pVector[0]));
     fVector.push_back(new GravityForce(pVector[1]));
     fVector.push_back(new GravityForce(pVector[2]));
+
+    fVector.push_back(new DampeningForce(pVector[0]));
+    fVector.push_back(new DampeningForce(pVector[1]));
+    fVector.push_back(new DampeningForce(pVector[2]));
     //fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
     //fVector.push_back(new SpringForce(pVector[2],pVector[1], 0.4 , 0.1, 0.01));
 
@@ -257,7 +263,7 @@ static void idle_func(void) {
 
         //Solver* solver = new EulerianSolver();
         //Solver* solver = new ForwardEulerianSolver();
-        Solver* solver = new MidPointSolver();
+              //ToDO should check for mem leak
         solver->simulation_step(pVector, fVector, cVector, dt);
     }
     else {
