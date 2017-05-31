@@ -12,6 +12,7 @@
 #include "MidPointSolver.h"
 #include "EulerianVecSolver.h"
 #include "forces/DampeningForce.h"
+#include "Runge4Solver.h"
 
 #include <GL/glut.h>
 
@@ -40,8 +41,9 @@ static int mouse_release[3];
 static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
-static Solver* solver = new ForwardEulerianSolver();
-
+static Solver* solver = new MidPointSolver();
+//static Solver* solver = new ForwardEulerianSolver();
+//static Solver* solver = new Runge4Solver();
 /*
 ----------------------------------------------------------------------
 free/clear/allocate simulation data
@@ -344,7 +346,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.02f;
+        dt = 2.02f; //(max 2.03f runge4)
         d = 5.f;
         fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
                 N, dt, d);

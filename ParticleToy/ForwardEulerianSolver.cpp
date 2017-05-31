@@ -27,7 +27,7 @@ void ForwardEulerianSolver::simulation_step(std::vector<Particle *> pVector, std
     }
 
     //This print statement slows down execution
-    printf("pos: (%f, %f)\tvel: (%f, %f)\n",
-           pVector[0]->m_Position[0], pVector[0]->m_Position[1], pVector[0]->m_Velocity[0], pVector[0]->m_Velocity[1]);
+    //printf("pos: (%f, %f)\tvel: (%f, %f)\n",
+    //       pVector[0]->m_Position[0], pVector[0]->m_Position[1], pVector[0]->m_Velocity[0], pVector[0]->m_Velocity[1]);
 
 }
