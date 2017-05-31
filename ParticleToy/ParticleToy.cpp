@@ -79,8 +79,8 @@ static void init_system(void) {
     particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[1]));
     particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[2]));
 
-    particleSystem->constraints.push_back(new CircularWireConstraint(particleSystem->particles[0], center, dist));
-    particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
+    //particleSystem->constraints.push_back(new CircularWireConstraint(particleSystem->particles[0], center, dist));
+    //particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
 
     solver = new ForwardEulerianSolver();
 }
@@ -213,22 +213,94 @@ static void key_func(unsigned char key, int x, int y) {
     }
 }
 
+/**
+ *
+ * @param p1
+ * @param p2
+ * @return the squared distance between two particles.
+ */
+static float distanceSq(Particle* p1, Particle* p2){
+    Vec2f distVec = p1->m_Position - p2->m_Position;
+    return distVec * distVec;
+}
+/**
+ *
+ * @param particle
+ * @return the closest particle to the given particle.
+ */
+static Particle* closesParticle(Particle* particle){
+    int pSize = particleSystem->particles.size();
+    Particle * closest;
+    float cDist;
+    for(int i = 0; i < pSize; i++){
+        if(i==0) {
+            closest = particleSystem->particles[0];
+            cDist = distanceSq(closest, particle);
+        }
+        else{
+            float nxtDist = distanceSq(particleSystem->particles[i],particle);
+            if(cDist > nxtDist){
+                closest = particleSystem->particles[i];
+                cDist = nxtDist;
+            }
+        }
+    }
+
+    return closest;
+}
+
 static void mouse_func(int button, int state, int x, int y) {
     omx = mx = x;
     omx = my = y;
 
-    if (!mouse_down[0]) {
+    if (!mouse_down[0]==1) {
         hmx = x;
         hmy = y;
     }
     if (mouse_down[button]) mouse_release[button] = state == GLUT_UP;
     if (mouse_down[button]) mouse_shiftclick[button] = glutGetModifiers() == GLUT_ACTIVE_SHIFT;
     mouse_down[button] = state == GLUT_DOWN;
+    //create particle
+    if (mouse_down[0]==1) {
+        float loc_x = (float) mx / (float) win_x * 2.0 - 1.0;
+        float loc_y = 0 - ((float) my / (float) win_y * 2.0 - 1.0);
+
+        Vec2f place(loc_x, loc_y);
+        printf("x:%f,y:%f\n", loc_x, loc_y);
+        Particle *mousePoint = new Particle(place);
+        Particle *closestPart = closesParticle(mousePoint);
+        if (closestPart &&(
+                mousePoint->m_Position[0] != closestPart->m_Position[0]
+            || mousePoint->m_Position[1] != closestPart->m_Position[1])) {
+            particleSystem->particles.push_back(mousePoint);
+
+            particleSystem->forces.push_back(
+                new SpringForce(mousePoint, closestPart, sqrt(distanceSq(mousePoint, closestPart)), 0.1, 0.01));
+            printf("create new particle at: %f, %f\n", mousePoint->m_ConstructPos[0], mousePoint->m_ConstructPos[1]);
+        }
+        else{
+            delete(mousePoint); //Removes the particle in case it is at the exact same spot as another particle.
+        }
+    }
+
+    if (mouse_down[0]==0) {
+        //delete();
+        //pVector.pop_back();
+        //fVector.pop_back();
+    }
+
+
+
 }
 
 static void motion_func(int x, int y) {
     mx = x;
     my = y;
+
+    float loc_x = (float)mx/(float)win_x*2.0-1.0;
+    float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
+    particleSystem->particles.back()->m_Position =  Vec2f(loc_x,loc_y);
+    printf("move to: %f, %f\n",loc_x,loc_y);
 }
 
 static void reshape_func(int width, int height) {
@@ -240,7 +312,14 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-    if (dsim){ solver->simulation_step(particleSystem, dt); }
+    if (dsim){
+        solver->simulation_step(particleSystem, dt);
+        if(mouse_down[0] == 1){//Make sure the mouse particle does not move when it is hold
+            float loc_x = (float)mx/(float)win_x*2.0-1.0;
+            float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
+            particleSystem->particles.back()->m_Position = Vec2f(loc_x,loc_y);
+        }
+    }
     else {
         get_from_UI();
         remap_GUI();
@@ -321,8 +400,6 @@ int main(int argc, char **argv) {
         N = 64;
         dt = 0.02f; //(max 2.03f runge4)
         d = 5.f;
-        fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
-                N, dt, d);
     } else {
         N = atoi(argv[1]);
         dt = (float) atof(argv[2]);
