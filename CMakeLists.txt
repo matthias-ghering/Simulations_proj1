@@ -27,6 +27,8 @@ set(SOURCE_FILES
         ParticleToy/constraints/RodConstraint.cpp
         ParticleToy/constraints/RodConstraint.h
         ParticleToy/Solver.cpp
+        ParticleToy/forces/AngularSpringForce.cpp
+        ParticleToy/forces/AngularSpringForce.h
         ParticleToy/forces/SpringForce.cpp
         ParticleToy/forces/SpringForce.h
         ParticleToy/forces/Force.h

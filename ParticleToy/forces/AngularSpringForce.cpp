@@ -1,17 +1,19 @@
-#include "SpringForce.h"
+#include "AngularSpringForce.h"
 
-SpringForce::SpringForce(Particle *p1, Particle *p2, double dist, double ks, double kd) :
-        m_p1(p1), m_p2(p2), m_dist(dist), m_ks(ks), m_kd(kd) {}
+AngularSpringForce::AngularSpringForce(Particle *p1, Particle *p2, Particle *p3, double dist, double ks, double kd) :
+        m_p1(p1), m_p2(p2), m_p3(p3), m_dist(dist), m_ks(ks), m_kd(kd) {}
 
-void SpringForce::draw() {
+void AngularSpringForce::draw() {
     glBegin(GL_LINES);
-    glColor3f(0.6, 0.7, 0.8);
+    glColor3f(0.4, 0.4, 0.4);
     glVertex2f(m_p1->m_Position[0], m_p1->m_Position[1]);
     glVertex2f(m_p2->m_Position[0], m_p2->m_Position[1]);
+    glVertex2f(m_p2->m_Position[0], m_p2->m_Position[1]);
+    glVertex2f(m_p3->m_Position[0], m_p3->m_Position[1]);
     glEnd();
 }
 
-void SpringForce::calc_Force() {
+void AngularSpringForce::calc_Force() {
     Vec2f l = m_p1->m_Position - m_p2->m_Position;
     Vec2f ldot = m_p1->m_Velocity - m_p2->m_Velocity;
     float ls = (float) sqrt(l*l); //This calculates the ||l|| also known as the distance between p1 and p2.
