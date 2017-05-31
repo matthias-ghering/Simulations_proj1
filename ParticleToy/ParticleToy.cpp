@@ -134,7 +134,7 @@ static void draw_particles(void) {
     int size = pVector.size();
     for (int i = 0; i < size; i++) {
         pVector[i]->draw();
-        std::cout << i << "  " << pVector[i]->m_Position << "\n ";
+        //std::cout << i << "  " << pVector[i]->m_Position << "\n ";
     }
 }
 
@@ -232,6 +232,41 @@ static void key_func(unsigned char key, int x, int y) {
     }
 }
 
+/**
+ *
+ * @param p1
+ * @param p2
+ * @return the squared distance between two particles.
+ */
+static float distanceSq(Particle* p1, Particle* p2){
+    Vec2f distVec = p1->m_Position - p2->m_Position;
+    return distVec * distVec;
+}
+
+static Particle* closesParticle(Particle* particle){
+    int pSize = pVector.size();
+    Particle * closest;
+    float cDist;
+    for(int i = 0; i < pSize; i++){
+        printf("Staring empty closest");
+        if(i==0) {
+            closest = pVector[0];
+            cDist = distanceSq(closest, particle);
+            printf("Set closest");
+        }
+        else{
+            float nxtDist = distanceSq(pVector[i],particle);
+            if(cDist > nxtDist){
+                closest = pVector[i];                       //TODO: does this work with references?
+                cDist = nxtDist;
+                printf("new closest");
+            }
+        }
+    }
+
+    return closest;
+}
+
 static void mouse_func(int button, int state, int x, int y) {
     omx = mx = x;
     omx = my = y;
@@ -246,25 +281,23 @@ static void mouse_func(int button, int state, int x, int y) {
 
     //create particle
     if (mouse_down[0]==1) {
-        const float dist = 0.4;
-
         float loc_x = (float)mx/(float)win_x*2.0-1.0;
         float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
 
-        const Vec2f place(loc_x,loc_y);
-        const Vec2f offset(dist, 0);
+        Vec2f place(loc_x,loc_y);
+        printf("x:%f,y:%f\n",loc_x,loc_y);
+        Particle *mousePoint = new Particle(place);
+        Particle *closestPart = closesParticle(mousePoint);
+        pVector.push_back(mousePoint);
 
-        pVector.push_back(new Particle(place));
-        pVector.push_back(new Particle(place + offset));
-
-        fVector.push_back(new GravityForce(pVector.back()));
-        fVector.push_back(new SpringForce(pVector.back(), pVector.end()[-2], 0.4, 0.1, 0.01));
+        fVector.push_back(new SpringForce(mousePoint, closestPart, sqrt(distanceSq(mousePoint,closestPart)) ,0.1, 0.01));
+        printf("create new particle at: %f, %f\n", mousePoint->m_ConstructPos[0],mousePoint->m_ConstructPos[1]);
     }
+
     if (mouse_down[0]==0) {
-        pVector.pop_back();
-        pVector.pop_back();
-        fVector.pop_back();
-        fVector.pop_back();
+        //delete();
+        //pVector.pop_back();
+        //fVector.pop_back();
     }
 
 
@@ -277,8 +310,8 @@ static void motion_func(int x, int y) {
 
     float loc_x = (float)mx/(float)win_x*2.0-1.0;
     float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
-
-    pVector.end()[-2]->m_Position =  Vec2f(loc_x,loc_y) ;
+    pVector.back()->m_Position =  Vec2f(loc_x,loc_y);
+    printf("move to: %f, %f\n",loc_x,loc_y);
 }
 
 static void reshape_func(int width, int height) {
@@ -371,8 +404,8 @@ int main(int argc, char **argv) {
         N = 64;
         dt = 0.02f;
         d = 5.f;
-        fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
-                N, dt, d);
+        //fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
+        //        N, dt, d);
     } else {
         N = atoi(argv[1]);
         dt = (float) atof(argv[2]);
