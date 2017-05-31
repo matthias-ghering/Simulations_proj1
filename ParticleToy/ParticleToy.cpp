@@ -73,8 +73,7 @@ static void init_system(void) {
     fVector.push_back(new GravityForce(pVector[0]));
     fVector.push_back(new GravityForce(pVector[1]));
     fVector.push_back(new GravityForce(pVector[2]));
-
-    cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+    cVector.push_back(new CircularWireConstraint(pVector[2], center, dist));
     cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
 }
 
@@ -122,7 +121,6 @@ static void draw_particles(void) {
     int size = pVector.size();
     for (int i = 0; i < size; i++) {
         pVector[i]->draw();
-        //std::cout << i << "  " << pVector[i]->m_Position << "\n ";
     }
 }
 
@@ -132,8 +130,6 @@ static void draw_forces(void) {
     for (int i = 0; i < size; i++) {
         fVector[i]->draw();
     }
-
-
 }
 
 static void draw_constraints(void) {
@@ -163,7 +159,6 @@ static void get_from_UI() {
     if (i < 1 || i > N || j < 1 || j > N) return;
 
     if (mouse_down[0]) {
-
     }
 
     if (mouse_down[2]) {
@@ -289,9 +284,7 @@ static void mouse_func(int button, int state, int x, int y) {
     }
 
     if (mouse_down[0]==0) {
-        //delete();
-        //pVector.pop_back();
-        //fVector.pop_back();
+        //At this point you could specify behavior for releasing the left mouse button.
     }
 
 
