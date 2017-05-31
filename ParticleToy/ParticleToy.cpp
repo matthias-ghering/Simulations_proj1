@@ -10,16 +10,12 @@
 #include "EulerianSolver.h"
 #include "ForwardEulerianSolver.h"
 #include "MidPointSolver.h"
-#include "EulerianVecSolver.h"
 #include "forces/DampeningForce.h"
 #include "Runge4Solver.h"
 
 #include <GL/glut.h>
 
 /* macros */
-
-/* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector, float dt);
 
 /* global variables */
 
@@ -43,8 +39,6 @@ static int omx, omy, mx, my;
 static int hmx, hmy;
 static Solver* solver;
 static ParticleSystem* particleSystem;
-//static Solver* solver = new ForwardEulerianSolver();
-//static Solver* solver = new Runge4Solver();
 /*
 ----------------------------------------------------------------------
 free/clear/allocate simulation data
@@ -55,6 +49,8 @@ static void free_data(void) {
     particleSystem->particles.clear();
     particleSystem->particles.clear();
     particleSystem->particles.clear();
+    delete(solver);
+    delete(particleSystem);
 }
 
 static void clear_data(void) {
@@ -71,14 +67,9 @@ static void init_system(void) {
     const Vec2f offset(dist, 0.0);
     particleSystem = new ParticleSystem();
 
-    // Create three particles, attach them to each other, then add a
-    // circular wire constraint to the first.
-    //Particle* p1 = new Particle(center + offset + offset + offset + offset);
     particleSystem->particles.push_back(new Particle(center + offset));
     particleSystem->particles.push_back(new Particle(center + offset + offset));
     particleSystem->particles.push_back(new Particle(center + offset + offset + offset));
-    //pVector.push_back(p1);
-
 
     particleSystem->forces.push_back(new GravityForce(particleSystem->particles[0]));
     particleSystem->forces.push_back(new GravityForce(particleSystem->particles[1]));
@@ -87,13 +78,9 @@ static void init_system(void) {
     particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[0]));
     particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[1]));
     particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[2]));
-    //fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
-    //fVector.push_back(new SpringForce(pVector[2],pVector[1], 0.4 , 0.1, 0.01));
 
-    //delete_this_dummy_rod = new RodConstraint(pVector[1], pVector[2], dist);
     particleSystem->constraints.push_back(new CircularWireConstraint(particleSystem->particles[0], center, dist));
     particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
-    //delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
 
     solver = new ForwardEulerianSolver();
 }
@@ -253,13 +240,7 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-    if (dsim){
-
-        //Solver* solver = new EulerianSolver();
-        //Solver* solver = new ForwardEulerianSolver();
-              //ToDO should check for mem leak
-        solver->simulation_step(particleSystem, dt);
-    }
+    if (dsim){ solver->simulation_step(particleSystem, dt); }
     else {
         get_from_UI();
         remap_GUI();

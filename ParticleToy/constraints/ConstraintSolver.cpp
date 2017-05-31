@@ -70,11 +70,11 @@ void ConstraintSolver::reset() {
     this->qdot.clear();
     this->Q.clear();
 
-    free(this->C);
-    free(this->Cdot);
-    free(this->J);
-    free(this->JT);
-    free(this->Jdot);
+    delete(this->C);
+    delete(this->Cdot);
+    delete(this->J);
+    delete(this->JT);
+    delete(this->Jdot);
 }
 
 void ConstraintSolver::applyConstraints(std::vector<Particle *> particles, std::vector<Constraint *> constraints, float ks, float kd) {
@@ -123,9 +123,8 @@ void ConstraintSolver::applyConstraints(std::vector<Particle *> particles, std::
         particles[i]->m_Force[1] += QhatT.getValue(2 * i + 1, 0);
     }
 
-    free(JW);
-    free(lambdaT);
-    free(lambdaTarray);
+    delete(JW);
+    delete(lambdaT);
 
     this->reset();
 }

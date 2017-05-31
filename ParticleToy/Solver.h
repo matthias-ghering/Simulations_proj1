@@ -1,5 +1,6 @@
 #ifndef SIMULATION_PROJ1_SOLVER_H
 #define SIMULATION_PROJ1_SOLVER_H
+
 #include <gfx/vec2.h>
 #include "Particle.h"
 #include "forces/Force.h"

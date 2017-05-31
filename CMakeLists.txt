@@ -33,8 +33,6 @@ set(SOURCE_FILES
         ParticleToy/ForwardEulerianSolver.h
         ParticleToy/Runge4Solver.cpp
         ParticleToy/Runge4Solver.h
-        ParticleToy/EulerianVecSolver.cpp
-        ParticleToy/EulerianVecSolver.h
         ParticleToy/MidPointSolver.cpp
         ParticleToy/MidPointSolver.h
         ParticleToy/forces/Force.h

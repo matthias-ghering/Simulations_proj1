@@ -19,7 +19,6 @@ public:
     std::vector<Particle*> particles;
     std::vector<Force*> forces;
     std::vector<Constraint*> constraints;
-    ConstraintSolver* constraintSolver;
     float time;
 
     void drawParticles();
