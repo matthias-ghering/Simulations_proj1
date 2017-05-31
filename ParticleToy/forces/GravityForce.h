@@ -14,10 +14,11 @@ class GravityForce : public Force {
 public:
     GravityForce(Particle *p1);
     void calc_Force() override;
+    void draw() override;
 
 private:
     Particle *m_p1;   // particle 1
-
+    Vec2f gravitationalForce;
 };
 
 

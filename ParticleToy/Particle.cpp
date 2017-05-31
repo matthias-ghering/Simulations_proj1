@@ -25,3 +25,7 @@ void Particle::draw() {
     glVertex2f((GLfloat) (m_Position[0] - h / 2.0), (GLfloat) (m_Position[1] + h / 2.0));
     glEnd();
 }
+
+void Particle::setIndex(int i) {
+    this->index = i;
+}
