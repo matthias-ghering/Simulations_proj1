@@ -1,0 +1,33 @@
+//
+// Created by woute on 31/05/2017.
+//
+
+#include "ParticleSystem.h"
+
+ParticleSystem::ParticleSystem() {
+    this->time = 0;
+}
+
+void ParticleSystem::drawParticles() {
+    int size = this->particles.size();
+
+    for (int i = 0; i < size; i++) {
+        this->particles[i]->draw();
+    }
+}
+
+void ParticleSystem::drawForces() {
+    int size = this->forces.size();
+
+    for (int i = 0; i < size; i++) {
+        this->forces[i]->draw();
+    }
+}
+
+void ParticleSystem::drawConstraints() {
+    int size = this->constraints.size();
+
+    for (int i = 0; i < size; i++) {
+        this->constraints[i]->draw();
+    }
+}

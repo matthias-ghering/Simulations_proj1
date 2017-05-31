@@ -48,7 +48,7 @@ set(SOURCE_FILES
         ParticleToy/constraints/ConstraintSolver.h
         ParticleToy/constraints/ConstraintSolver.cpp
         ParticleToy/SparseMatrix.cpp
-        ParticleToy/SparseMatrix.h)
+        ParticleToy/SparseMatrix.h ParticleToy/ParticleSystem.cpp ParticleToy/ParticleSystem.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)

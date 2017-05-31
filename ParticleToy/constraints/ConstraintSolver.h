@@ -12,12 +12,13 @@
 
 class ConstraintSolver {
 public:
+    ConstraintSolver();
     // Apply constraint forces to given particles using given constraints, and stiffness and damping factors ks and kd
     void applyConstraints(std::vector<Particle *> particles, std::vector<Constraint *> constraints, float ks, float kd);
 
 private:
     // Initialize vectors q, qdot, qdotdot and Q, and matrices W, C, Cdot, J, Jdot, JT
-    void init(std::vector<Particle *> particles,std::vector<Constraint *> constraints);
+    void init(std::vector<Particle *> particles, std::vector<Constraint *> constraints);
     // Empty all vectors and matrices
     void reset();
 

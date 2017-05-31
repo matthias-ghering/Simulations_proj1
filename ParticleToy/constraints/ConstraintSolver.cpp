@@ -1,6 +1,8 @@
 
 #include "ConstraintSolver.h"
 
+ConstraintSolver::ConstraintSolver() {}
+
 void ConstraintSolver::init(std::vector<Particle *> particles, std::vector<Constraint *> constraints) {
     // We use n to denote particles.size(), and c for constraints.size()
     for (int i = 0; i < particles.size(); i++) {

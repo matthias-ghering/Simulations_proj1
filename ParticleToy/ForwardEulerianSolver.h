@@ -11,6 +11,7 @@ class ForwardEulerianSolver : public Solver {
 public:
     ForwardEulerianSolver();
     void simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector, float dt) override;
+    void simulation_step(ParticleSystem* p, float dt) override;
 };
 
 
