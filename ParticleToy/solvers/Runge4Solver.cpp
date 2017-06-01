@@ -8,6 +8,14 @@
 Runge4Solver::Runge4Solver():Solver(){}
 
 void Runge4Solver::simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector,float dt) {
+
+}
+
+void Runge4Solver::simulation_step(ParticleSystem* p, float dt) {
+    std::vector<Particle* > pVector = p->particles;
+    std::vector<Force* > fVector = p->forces;
+    std::vector<Constraint* > cVector = p->constraints;
+
     int fSize = fVector.size(), pSize = pVector.size();
     std::vector<Vec2f> k1, k2, k3, k4;                                      //For every particle there is a k1 to k4.
     std::vector<Vec2f> initpVector;                                         //tmp position vector
@@ -71,9 +79,4 @@ void Runge4Solver::simulation_step(std::vector<Particle *> pVector, std::vector<
     //This print statement slows down execution
     //printf("pos: (%f, %f)\tvel: (%f, %f)\n",
     //       pVector[0]->m_Position[0], pVector[0]->m_Position[1], pVector[0]->m_Velocity[0], pVector[0]->m_Velocity[1]);
-
-}
-
-void Runge4Solver::simulation_step(ParticleSystem* p, float dt) {
-
 }

@@ -364,7 +364,7 @@ void processSolverMenuEvents(int option) {
         case 2:
         default:
             printf("Runge-Kutta 4th order solver selected\n");
-            //solver = new Runge4Solver();
+            solver = new Runge4Solver();
     }
 }
 
@@ -443,7 +443,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.02f;
+        dt = 0.1f;
         d = 5.f;
     } else {
         N = atoi(argv[1]);
