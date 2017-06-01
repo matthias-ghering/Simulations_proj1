@@ -69,14 +69,17 @@ static void init_system(void) {
     pVector.push_back(new Particle(center + offset + offset));
     //pVector.push_back(new Particle(center + offset + offset + offset));
 
-    pVector.push_back(new Particle(Vec2f(0.6,0.6)));    //p1
-    pVector.push_back(new Particle(Vec2f(0.4,0.5)));    //p2
-    pVector.push_back(new Particle(Vec2f(0.6,0.4)));    //p3
+    pVector.push_back(new Particle(Vec2f(0.5,0.6)));    //p1
+    //pVector.push_back(new Particle(Vec2f(0.6,0.6)));    //p2
+    pVector.push_back(new Particle(Vec2f(0.5,0.5)));    //p2
+    pVector.push_back(new Particle(Vec2f(0.6,0.5)));    //p3
 
     fVector.push_back(new GravityForce(pVector[0]));
     fVector.push_back(new GravityForce(pVector[1]));
     //fVector.push_back(new GravityForce(pVector[2]));
-    fVector.push_back(new AngularSpringForce(pVector[2],pVector[3],pVector[4],0.2, 0.1, 0.01));
+    //fVector.push_back(new SpringForce(pVector[2],pVector[3],0.1,0.1,0.01));
+    //fVector.push_back(new SpringForce(pVector[3],pVector[4],0.1,0.1,0.01));
+    fVector.push_back(new AngularSpringForce(pVector[2],pVector[3],pVector[4],0.1,190.0, 0.1, 0.01));
 
     cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
     cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
@@ -250,7 +253,6 @@ static Particle* closesParticle(Particle* particle){
             }
         }
     }
-
     return closest;
 }
 
