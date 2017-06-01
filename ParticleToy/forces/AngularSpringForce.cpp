@@ -2,52 +2,60 @@
 #include <cmath>
 #include <math.h>
 AngularSpringForce::AngularSpringForce(Particle *p1, Particle *p2, Particle *p3, double dist, double rstAngle,double ks,  double kd) :
-        m_p1(p1), m_p2(p2), m_p3(p3), m_dist(dist), m_rstAngle(cos(rstAngle*(M_PI/180.0))), m_ks(ks), m_kd(kd) {}
+        m_p1(p1), m_p2(p2), m_p3(p3), m_dist(dist), m_rstAngle(rstAngle), m_ks(ks), m_kd(kd) {}
 
 void AngularSpringForce::draw() {
+    const double h = 0.04;
     glBegin(GL_LINES);
-    glColor3f(0.4, 0.4, 0.4);
+
+    glColor3f(0.945, 0.851, 0.566);
     glVertex2f(m_p1->m_Position[0], m_p1->m_Position[1]);
     glVertex2f(m_p2->m_Position[0], m_p2->m_Position[1]);
     glVertex2f(m_p2->m_Position[0], m_p2->m_Position[1]);
     glVertex2f(m_p3->m_Position[0], m_p3->m_Position[1]);
+
+    glLineWidth(10.f);
+    glVertex2f((GLfloat) (m_p2->m_Position[0] - h / 2.0), (GLfloat) (m_p2->m_Position[1] - h / 2.0));
+    glVertex2f((GLfloat) (m_p2->m_Position[0] + h / 2.0), (GLfloat) (m_p2->m_Position[1] - h / 2.0));
+    glVertex2f((GLfloat) (m_p2->m_Position[0] + h / 2.0), (GLfloat) (m_p2->m_Position[1] + h / 2.0));
+    glVertex2f((GLfloat) (m_p2->m_Position[0] - h / 2.0), (GLfloat) (m_p2->m_Position[1] + h / 2.0));
+
     glEnd();
 }
 
-static float distance(Particle* p1, Particle* p2){
-    Vec2f distVec = p1->m_Position - p2->m_Position;
-    return sqrt(distVec * distVec);
-}
-
-static float lenPos(Vec2f v){
+static float lenVec(Vec2f v){
     return sqrt(v * v);
 }
 
-static float dotVec2f(Vec2f v1,Vec2f v2){
-    float dot = v1[0]*v2[0]+v1[1]*v2[1];
-    //printf("ehm: %f,%f",v1[0],v1[1]);
-    return dot;
-}
-
 void AngularSpringForce::calc_Force() {
-    /*Vec2f l = m_p1->m_Position - m_p2->m_Position;
-    Vec2f ldot = m_p1->m_Velocity - m_p2->m_Velocity;
-    float ls = (float) sqrt(l*l); //This calculates the ||l|| also known as the distance between p1 and p2.
+    if(m_rstAngle > 180){
+        m_rstAngle = m_rstAngle - 180;
+        //m_correctSide = 1;            //This can in the future be used to know if the angle is on the correct side.
+    }
 
-    float t1 = (ldot * l);
-
-    Vec2f f = (m_ks * (ls - m_dist) + m_kd * ((ldot * l)/ls)) * (l/ls);
-    m_p1->m_Force += f*-1;
-    m_p2->m_Force += f;*/
+    float cosRstA = cosf(M_PI*m_rstAngle/180.0);
     Vec2f arm12 = m_p1->m_Position - m_p2->m_Position;
     Vec2f arm23 = m_p3->m_Position - m_p2->m_Position;
-    float cos = (arm12*arm23)/(lenPos(arm12)*lenPos(arm23));
-    //printf("dot:%f, \n",dotVec2f(arm1,arm2));
-    printf("cos: %f, %f, %f\n",cos, m_rstAngle, M_PI);
+    float lenArm12 = lenVec(arm12);
+    float lenArm23 = lenVec(arm23);
+    Vec2f dotArm12 = m_p1->m_Velocity-m_p2->m_Velocity;
+    Vec2f dotArm23 = m_p2->m_Velocity-m_p3->m_Velocity;
+    float cos = (arm12*arm23)/(lenArm12*lenArm23);
 
-    m_p1->m_Force += -m_ks*(cos-m_rstAngle)*(arm23/lenPos(arm23));
-    m_p3->m_Force += -m_ks*(cos-m_rstAngle)*(arm12/lenPos(arm12));
 
+    //Regular spring force on arm12.
+    Vec2f springForce = (m_ks * (lenArm12 - m_dist) + m_kd * ((dotArm12 * arm12)/lenArm12)) * (arm12/lenArm12);
+    //Angular spring force function.
+    m_p1->m_Force += -m_ks*(cos-cosRstA)*(arm23/lenVec(arm23));
+    m_p1->m_Force += -1*springForce;
+    m_p2->m_Force += springForce;
+
+    //Regular spring force on arm23.
+    springForce = (m_ks * (lenArm23 - m_dist) + m_kd * ((dotArm23 * arm23)/lenArm23)) * (arm23/lenArm23);
+    //Angular spring force function.
+    m_p3->m_Force += -m_ks*(cos-cosRstA)*(arm12/lenVec(arm12));
+    m_p3->m_Force += -1*springForce;
+    m_p2->m_Force += springForce;
 }
 
 
