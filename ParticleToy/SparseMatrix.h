@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <gfx/vec2.h>
-#include "linearSolver.h"
+#include "solvers/linearSolver.h"
 
 /*
  * TODO create an actual sparse matrix implementation

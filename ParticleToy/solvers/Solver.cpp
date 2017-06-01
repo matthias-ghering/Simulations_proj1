@@ -1,4 +1,4 @@
-#include "Particle.h"
+#include "../Particle.h"
 #include "Solver.h"
 
 //#define DAMP 0.98f
