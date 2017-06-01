@@ -466,7 +466,9 @@ int main(int argc, char **argv) {
 
     printf("\n\nHow to use this application:\n\n");
     printf("\t Toggle construction/simulation display with the spacebar key\n");
-    printf("\t Dump frames by pressing the 'd' key\n");
+    printf("\t Increase time step with the 'w' key\n");
+    printf("\t Decrease time step with the 's' key\n");
+    printf("\t Press the middle mouse button for solver and scene menus\n");
     printf("\t Quit by pressing the 'q' key\n");
 
     dsim = 0;
