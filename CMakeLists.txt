@@ -21,20 +21,20 @@ set(SOURCE_FILES
         ParticleToy/constraints/RodConstraint.h
         ParticleToy/constraints/CircularWireConstraint.cpp
         ParticleToy/constraints/CircularWireConstraint.h
-        ParticleToy/linearSolver.cpp
-        ParticleToy/linearSolver.h
+        ParticleToy/solvers/linearSolver.cpp
+        ParticleToy/solvers/linearSolver.h
         ParticleToy/Particle.cpp
         ParticleToy/Particle.h
         ParticleToy/ParticleToy.cpp
-        ParticleToy/Solver.cpp
-        ParticleToy/EulerianSolver.cpp
-        ParticleToy/EulerianSolver.h
-        ParticleToy/ForwardEulerianSolver.cpp
-        ParticleToy/ForwardEulerianSolver.h
-        ParticleToy/Runge4Solver.cpp
-        ParticleToy/Runge4Solver.h
-        ParticleToy/MidPointSolver.cpp
-        ParticleToy/MidPointSolver.h
+        ParticleToy/solvers/Solver.cpp
+        ParticleToy/solvers/EulerianSolver.cpp
+        ParticleToy/solvers/EulerianSolver.h
+        ParticleToy/solvers/ForwardEulerianSolver.cpp
+        ParticleToy/solvers/ForwardEulerianSolver.h
+        ParticleToy/solvers/Runge4Solver.cpp
+        ParticleToy/solvers/Runge4Solver.h
+        ParticleToy/solvers/MidPointSolver.cpp
+        ParticleToy/solvers/MidPointSolver.h
         ParticleToy/forces/Force.h
         ParticleToy/forces/SpringForce.cpp
         ParticleToy/forces/SpringForce.h
@@ -46,7 +46,7 @@ set(SOURCE_FILES
         ParticleToy/constraints/ConstraintSolver.h
         ParticleToy/constraints/ConstraintSolver.cpp
         ParticleToy/SparseMatrix.cpp
-        ParticleToy/SparseMatrix.h ParticleToy/ParticleSystem.cpp ParticleToy/ParticleSystem.h)
+        ParticleToy/SparseMatrix.h ParticleToy/ParticleSystem.cpp ParticleToy/ParticleSystem.h ParticleToy/SceneBuilder.cpp ParticleToy/SceneBuilder.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)

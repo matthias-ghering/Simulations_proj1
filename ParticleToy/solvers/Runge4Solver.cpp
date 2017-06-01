@@ -1,9 +1,9 @@
 //
 // Created by Matthias Ghering on 26-5-2017.
 //
-#include "forces/Force.h"
+#include "../forces/Force.h"
 #include "Runge4Solver.h"
-#include "constraints/ConstraintSolver.h"
+#include "../constraints/ConstraintSolver.h"
 
 Runge4Solver::Runge4Solver():Solver(){}
 
@@ -71,5 +71,9 @@ void Runge4Solver::simulation_step(std::vector<Particle *> pVector, std::vector<
     //This print statement slows down execution
     //printf("pos: (%f, %f)\tvel: (%f, %f)\n",
     //       pVector[0]->m_Position[0], pVector[0]->m_Position[1], pVector[0]->m_Velocity[0], pVector[0]->m_Velocity[1]);
+
+}
+
+void Runge4Solver::simulation_step(ParticleSystem* p, float dt) {
 
 }

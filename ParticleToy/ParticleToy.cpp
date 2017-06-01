@@ -7,28 +7,23 @@
 #include "constraints/RodConstraint.h"
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
-#include "EulerianSolver.h"
-#include "ForwardEulerianSolver.h"
-#include "MidPointSolver.h"
+#include "solvers/EulerianSolver.h"
+#include "solvers/ForwardEulerianSolver.h"
+#include "solvers/MidPointSolver.h"
 #include "forces/DampeningForce.h"
-#include "Runge4Solver.h"
+#include "solvers/Runge4Solver.h"
+#include "SceneBuilder.h"
 
 #include <GL/glut.h>
 
 /* macros */
 
 /* global variables */
-
 static int N;
 static float dt, d;
 static int dsim;
 static int dump_frames;
 static int frame_number;
-
-//Particle and Force vectors
-//static std::vector<Particle *> pVector;
-//static std::vector<Force *> fVector;
-//static std::vector<Constraint *> cVector;
 
 static int win_id;
 static int win_x, win_y;
@@ -37,8 +32,12 @@ static int mouse_release[3];
 static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
+static int sceneMenu;
+static int solverMenu;
+static int mainMenu;
 static Solver* solver;
 static ParticleSystem* particleSystem;
+
 /*
 ----------------------------------------------------------------------
 free/clear/allocate simulation data
@@ -49,8 +48,10 @@ static void free_data(void) {
     particleSystem->particles.clear();
     particleSystem->particles.clear();
     particleSystem->particles.clear();
+
     delete(solver);
     delete(particleSystem);
+    glutDestroyMenu(sceneMenu);
 }
 
 static void clear_data(void) {
@@ -62,26 +63,7 @@ static void clear_data(void) {
 }
 
 static void init_system(void) {
-    const float dist = 0.2;
-    const Vec2f center(0.0, 0.0);
-    const Vec2f offset(dist, 0.0);
     particleSystem = new ParticleSystem();
-
-    particleSystem->particles.push_back(new Particle(center + offset));
-    particleSystem->particles.push_back(new Particle(center + offset + offset));
-    particleSystem->particles.push_back(new Particle(center + offset + offset + offset));
-
-    particleSystem->forces.push_back(new GravityForce(particleSystem->particles[0]));
-    particleSystem->forces.push_back(new GravityForce(particleSystem->particles[1]));
-    particleSystem->forces.push_back(new GravityForce(particleSystem->particles[2]));
-
-    particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[0]));
-    particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[1]));
-    particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[2]));
-
-    //particleSystem->constraints.push_back(new CircularWireConstraint(particleSystem->particles[0], center, dist));
-    //particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
-
     solver = new ForwardEulerianSolver();
 }
 
@@ -228,10 +210,10 @@ static float distanceSq(Particle* p1, Particle* p2){
  * @param particle
  * @return the closest particle to the given particle.
  */
-static Particle* closesParticle(Particle* particle){
+static Particle* closestParticle(Particle* particle){
     int pSize = particleSystem->particles.size();
-    Particle * closest;
-    float cDist;
+    Particle * closest = nullptr;
+    float cDist = 0;
     for(int i = 0; i < pSize; i++){
         if(i==0) {
             closest = particleSystem->particles[0];
@@ -249,6 +231,14 @@ static Particle* closesParticle(Particle* particle){
     return closest;
 }
 
+bool inRange(Particle* p1, Particle* p2) {
+    float x = p1->m_Position[0] - p2->m_Position[0];
+    float y = p1->m_Position[1] - p2->m_Position[1];
+    float range = 0.05f;
+
+    return (x >= 0 ? x : -1 * x) < range && (y >= 0 ? y : -1 * y) < range;
+}
+
 static void mouse_func(int button, int state, int x, int y) {
     omx = mx = x;
     omx = my = y;
@@ -260,47 +250,31 @@ static void mouse_func(int button, int state, int x, int y) {
     if (mouse_down[button]) mouse_release[button] = state == GLUT_UP;
     if (mouse_down[button]) mouse_shiftclick[button] = glutGetModifiers() == GLUT_ACTIVE_SHIFT;
     mouse_down[button] = state == GLUT_DOWN;
+
     //create particle
     if (mouse_down[0]==1) {
-        float loc_x = (float) mx / (float) win_x * 2.0 - 1.0;
-        float loc_y = 0 - ((float) my / (float) win_y * 2.0 - 1.0);
+        float loc_x = (float) ((float) mx / (float) win_x * 2.0 - 1.0);
+        float loc_y = 0 - (float) ((float) my / (float) win_y * 2.0 - 1.0);
 
         Vec2f place(loc_x, loc_y);
-        printf("x:%f,y:%f\n", loc_x, loc_y);
         Particle *mousePoint = new Particle(place);
-        Particle *closestPart = closesParticle(mousePoint);
-        if (closestPart &&(
-                mousePoint->m_Position[0] != closestPart->m_Position[0]
-            || mousePoint->m_Position[1] != closestPart->m_Position[1])) {
-            particleSystem->particles.push_back(mousePoint);
+        Particle *closestPart = closestParticle(mousePoint);
 
+        if ( closestPart != nullptr && !inRange(closestPart, mousePoint)) {
             particleSystem->forces.push_back(
-                new SpringForce(mousePoint, closestPart, sqrt(distanceSq(mousePoint, closestPart)), 0.1, 0.01));
-            printf("create new particle at: %f, %f\n", mousePoint->m_ConstructPos[0], mousePoint->m_ConstructPos[1]);
+                    new SpringForce(mousePoint, closestPart, sqrt(distanceSq(mousePoint, closestPart)), 0.1, 0.01)
+            );
         }
-        else{
-            delete(mousePoint); //Removes the particle in case it is at the exact same spot as another particle.
-        }
+
+        particleSystem->particles.push_back(mousePoint);
+        particleSystem->forces.push_back(new DampeningForce(mousePoint));
+        printf("create new particle at: %f, %f\n", mousePoint->m_ConstructPos[0], mousePoint->m_ConstructPos[1]);
     }
-
-    if (mouse_down[0]==0) {
-        //delete();
-        //pVector.pop_back();
-        //fVector.pop_back();
-    }
-
-
-
 }
 
 static void motion_func(int x, int y) {
     mx = x;
     my = y;
-
-    float loc_x = (float)mx/(float)win_x*2.0-1.0;
-    float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
-    particleSystem->particles.back()->m_Position =  Vec2f(loc_x,loc_y);
-    printf("move to: %f, %f\n",loc_x,loc_y);
 }
 
 static void reshape_func(int width, int height) {
@@ -314,13 +288,15 @@ static void reshape_func(int width, int height) {
 static void idle_func(void) {
     if (dsim){
         solver->simulation_step(particleSystem, dt);
-        if(mouse_down[0] == 1){//Make sure the mouse particle does not move when it is hold
-            float loc_x = (float)mx/(float)win_x*2.0-1.0;
-            float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
-            particleSystem->particles.back()->m_Position = Vec2f(loc_x,loc_y);
+
+        // This is not in motion_func because a held particle would stop moving when the mouse stops moving, even though
+        // the mouse button is still pressed
+        if (mouse_down[0]) {
+            float loc_x = (float) ((float) mx / (float) win_x * 2.0 - 1.0);
+            float loc_y = 0 - (float) ((float) my / (float) win_y * 2.0 - 1.0);
+            particleSystem->particles.back()->m_Position = Vec2f(loc_x, loc_y);
         }
-    }
-    else {
+    } else {
         get_from_UI();
         remap_GUI();
     }
@@ -345,6 +321,60 @@ static void display_func(void) {
 open_glut_window --- open a glut compatible window and set callbacks
 ----------------------------------------------------------------------
 */
+// process events in scene submenu
+void processSceneMenuEvents(int option) {
+    delete(particleSystem);
+
+    switch (option) {
+        case 0:
+            particleSystem = createEmptyScene();
+            printf("Created empty scene\n");
+            break;
+        case 1:
+        default:
+            printf("Created circular wire scene\n");
+            particleSystem = createCircularWireScene();
+            break;
+    }
+}
+
+// Process events in solver submenu
+void processSolverMenuEvents(int option) {
+    delete(solver);
+
+    switch(option) {
+        case 0:
+            printf("ForwardEuler solver selected\n");
+            solver = new ForwardEulerianSolver();
+            break;
+        case 1:
+            printf("Mid-Point solver selected\n");
+            //solver = new MidPointSolver();
+            break;
+        case 2:
+        default:
+            printf("Runge-Kutta 4th order solver selected\n");
+            //solver = new Runge4Solver();
+    }
+}
+
+// Creates the entire menu, including submenus
+static void createMenu() {
+    sceneMenu = glutCreateMenu(processSceneMenuEvents);
+    glutAddMenuEntry("Empty scene", 0);
+    glutAddMenuEntry("Circular wire", 1);
+
+    solverMenu = glutCreateMenu(processSolverMenuEvents);
+    glutAddMenuEntry("Forward euler", 0);
+    glutAddMenuEntry("Mid-point", 1);
+    glutAddMenuEntry("Runge-kutta 4", 2);
+
+    mainMenu = glutCreateMenu(0);
+    glutAddSubMenu("Scenes", sceneMenu);
+    glutAddSubMenu("Solvers", solverMenu);
+
+    glutAttachMenu(GLUT_MIDDLE_BUTTON);
+}
 
 static void open_glut_window(void) {
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
@@ -361,6 +391,8 @@ static void open_glut_window(void) {
 
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_POLYGON_SMOOTH);
+
+    createMenu();
 
     pre_display();
 
@@ -398,7 +430,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.02f; //(max 2.03f runge4)
+        dt = 0.001f; //(max 2.03f runge4)
         d = 5.f;
     } else {
         N = atoi(argv[1]);

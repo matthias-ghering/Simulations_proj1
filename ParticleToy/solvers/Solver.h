@@ -2,11 +2,11 @@
 #define SIMULATION_PROJ1_SOLVER_H
 
 #include <gfx/vec2.h>
-#include "Particle.h"
-#include "forces/Force.h"
-#include "constraints/Constraint.h"
+#include "../Particle.h"
+#include "../forces/Force.h"
+#include "../constraints/Constraint.h"
 #include "vector"
-#include "ParticleSystem.h"
+#include "../ParticleSystem.h"
 
 class Solver {
 

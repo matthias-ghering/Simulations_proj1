@@ -1,9 +1,9 @@
 //
 // Created by Matthias Ghering on 26-5-2017.
 //
-#include "forces/Force.h"
+#include "../forces/Force.h"
 #include "EulerianSolver.h"
-#include "constraints/ConstraintSolver.h"
+#include "../constraints/ConstraintSolver.h"
 
 /**
  * This Solver is currently replaced by the ForwardEulerianSolver that matches the formula's.

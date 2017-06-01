@@ -17,7 +17,7 @@ public:
 
 private:
     Particle *m_p1;   // particle 1
-    float DAMP = 0.98;
+    float DAMP = 0.99;
 };
 
 

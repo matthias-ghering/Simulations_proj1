@@ -3,7 +3,7 @@
 //
 
 #include "MidPointSolver.h"
-#include "constraints/ConstraintSolver.h"
+#include "../constraints/ConstraintSolver.h"
 
 MidPointSolver::MidPointSolver() : Solver(){}
 
@@ -52,4 +52,9 @@ void MidPointSolver::simulation_step(std::vector<Particle *> pVector, std::vecto
           pVector[2]->m_Position[0], pVector[2]->m_Position[1], pVector[2]->m_Velocity[0], pVector[2]->m_Velocity[1]);
 
 }
+
+void MidPointSolver::simulation_step(ParticleSystem* p, float dt) {
+
+}
+
 
