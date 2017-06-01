@@ -12,7 +12,6 @@
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
 
-
 #include <iostream>
 
 #include "EulerianSolver.h"
