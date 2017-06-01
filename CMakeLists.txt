@@ -51,8 +51,6 @@ set(SOURCE_FILES
         ParticleToy/constraints/Constraint.h
         ParticleToy/constraints/ConstraintSolver.h
         ParticleToy/constraints/ConstraintSolver.cpp
-        ParticleToy/constraints/DotConstraint.cpp
-        ParticleToy/constraints/DotConstraint.h
         ParticleToy/constraints/LineConstraint.cpp
         ParticleToy/constraints/LineConstraint.h
         ParticleToy/ParticleSystem.cpp

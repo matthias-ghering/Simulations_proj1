@@ -4,9 +4,7 @@
 #include "Particle.h"
 
 #include "forces/SpringForce.h"
-//#include "forces/StaticForce.h"
 #include "constraints/RodConstraint.h"
-#include "constraints/DotConstraint.h"
 #include "constraints/LineConstraint.h"
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
