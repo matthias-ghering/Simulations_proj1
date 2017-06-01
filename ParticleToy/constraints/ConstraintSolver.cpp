@@ -78,6 +78,11 @@ void ConstraintSolver::reset() {
 }
 
 void ConstraintSolver::applyConstraints(std::vector<Particle *> particles, std::vector<Constraint *> constraints, float ks, float kd) {
+    if (constraints.size() == 0) {
+        // Skip constraint calculation
+        return;
+    }
+
     this->init(particles, constraints);
 
     SparseMatrix* JW = new SparseMatrix(constraints.size(), particles.size() * 2);
