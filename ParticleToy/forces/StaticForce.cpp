@@ -1,9 +1,9 @@
-#include "HorizontalForce.h"
+#include "StaticForce.h"
 
-HorizontalForce::HorizontalForce(Particle *p1, Vec2f staticForce) :
-        m_p1(p1), m_f(hForce) {}
+StaticForce::StaticForce(Particle *p1, Vec2f sForce) :
+        m_p1(p1), m_s(sForce) {}
 
-void HorizontalForce::draw() {
+void StaticForce::draw() {
     /*glBegin(GL_LINES);
     glColor3f(0.6, 0.7, 0.8);
     glVertex2f(m_p1->m_Position[0], m_p1->m_Position[1]);
@@ -12,17 +12,6 @@ void HorizontalForce::draw() {
     glEnd();*/
 }
 
-void HorizontalForce::calc_Force() {
-    m_p1->m_Force += m_p1->m_Mass * Vec2f(m_f, 0);
-
-
-    Vec2f l = m_p1->m_Position - m_p2->m_Position;
-    Vec2f ldot = m_p1->m_Velocity - m_p2->m_Velocity;
-    float ls = (float) sqrt(l*l); //This calculates the ||l|| also known as the distance between p1 and p2.
-
-    float t1 = (ldot * l);
-
-    Vec2f f = (m_ks * (ls - m_dist) + m_kd * ((ldot * l)/ls)) * (l/ls);
-    m_p1->m_Force += f*-1;
-    m_p2->m_Force += f;
+void StaticForce::calc_Force() {
+    m_p1->m_Force += m_p1->m_Mass * m_s;
 }

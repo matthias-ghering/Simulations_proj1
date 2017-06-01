@@ -6,7 +6,7 @@
 class WallConstraint : public Constraint{
 
 public:
-    WallConstraint(Particle *p1, Particle *p2, double dist);
+    WallConstraint(Particle *p1, double fixed_x);
     double getC() override ;
     double getCdot() override ;
     std::vector<Vec2f> getJ() override ;
@@ -14,5 +14,5 @@ public:
     void draw() override;
 
 private:
-    double const m_dist;
+    double const m_x;
 };

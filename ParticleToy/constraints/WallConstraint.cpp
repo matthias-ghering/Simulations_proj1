@@ -1,9 +1,8 @@
 #include "RodConstraint.h"
 #include <GL/glut.h>
 
-WallConstraint::WallConstraint(Particle *p1, Particle *p2, double dist) : m_dist(dist) {
+WallConstraint::WallConstraint(Particle *p1, double fixed_x) : m_dist(dist) {
     this->particles.push_back(p1);
-    this->particles.push_back(p2);
 }
 
 double WallConstraint:: getC() {

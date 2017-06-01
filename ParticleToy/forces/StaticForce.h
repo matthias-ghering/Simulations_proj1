@@ -1,16 +1,16 @@
-#pragma once
+
 
 #include "../Particle.h"
 #include "Force.h"
 
-class HorizontalForce : public Force{ //
+class StaticForce : public Force{
 public:
-    HorizontalForce(Particle *p1, double hForce);
+    StaticForce(Particle *p1, Vec2f sForce);
     void calc_Force() override;
     void draw() override;
 
 private:
 
     Particle *const m_p1;   // particle 1
-    Vec2f force;
+    Vec2f m_s;
 };

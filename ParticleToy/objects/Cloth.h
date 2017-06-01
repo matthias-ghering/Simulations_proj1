@@ -4,11 +4,17 @@
 
 #include "../Particle.h"
 #include "../ParticleSystem.h"
-
+#include "../forces/SpringForce.h"
+#include "../constraints/RodConstraint.h"
+#include "../constraints/DotConstraint.h"
+#include "../constraints/LineConstraint.h"
+#include "../constraints/WallConstraint.h"
+#include "../constraints/CircularWireConstraint.h"
+#include "../forces/GravityForce.h"
 
 class Cloth{
 public:
-    Cloth(static ParticleSystem* particleSystem);
+    Cloth();
 
 
 };

@@ -7,18 +7,22 @@
 #include "../constraints/CircularWireConstraint.h"
 #include "../forces/GravityForce.h"
 #include "../Particle.h"
+#include "../ParticleSystem.h"
 
-Cloth::Cloth(static ParticleSystem* particleSystem){
+static ParticleSystem* particleSystem;
+
+void Cloth(){
     //size of cloth
+    particleSystem = new ParticleSystem();
     int x_=2;
     int y_=2;
     const Vec2f lower_left_corner(-0.8, -0.8);
-    const float dist = 0.2;
+    const double dist = 0.2;
     //spring variables
-    const float ks_near = 30;
-    const float kd_near = 3;
-    const float ks_cross = 10;
-    const float kd_cross = 1;
+    const double ks_near = 30;
+    const double kd_near = 3;
+    const double ks_cross = 10;
+    const double kd_cross = 1;
 
     //cloth uses center as lower left corner
     for (int i = 0; i < x_; i++) {
@@ -29,7 +33,7 @@ Cloth::Cloth(static ParticleSystem* particleSystem){
             particleSystem->forces.push_back(new GravityForce(particleSystem->particles[j+i*y_]));
         }
     }
-
+    /*
     //add vertical structural springs
     for (int i = 0; i < x_; i++) {
         for (int j = 0; j < y_-1; j++) {
@@ -51,4 +55,5 @@ Cloth::Cloth(static ParticleSystem* particleSystem){
             particleSystem->forces.push_back(new SpringForce(particleSystem->particles[j+i*y_+1],particleSystem->forces[(j+i*y_)+y_], sqrt(pow(dist,2)*2) , ks_cross, kd_cross));
         }
     }
+     */
 }

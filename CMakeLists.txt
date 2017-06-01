@@ -42,6 +42,8 @@ set(SOURCE_FILES
         ParticleToy/forces/GravityForce.h
         ParticleToy/forces/DampeningForce.cpp
         ParticleToy/forces/DampeningForce.h
+        ParticleToy/forces/StaticForce.cpp
+        ParticleToy/forces/StaticForce.h
         ParticleToy/constraints/Constraint.h
         ParticleToy/constraints/ConstraintSolver.h
         ParticleToy/constraints/ConstraintSolver.cpp
@@ -52,7 +54,7 @@ set(SOURCE_FILES
         ParticleToy/constraints/LineConstraint.cpp
         ParticleToy/constraints/LineConstraint.h
         ParticleToy/ParticleSystem.cpp
-        ParticleToy/ParticleSystem.h ParticleToy/objects/Cloth.cpp ParticleToy/objects/Cloth.h)
+        ParticleToy/ParticleSystem.h)
 
 
 find_package (OpenGL REQUIRED)
