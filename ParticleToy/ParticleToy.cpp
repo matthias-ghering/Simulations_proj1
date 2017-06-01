@@ -5,21 +5,14 @@
 
 #include "forces/SpringForce.h"
 #include "constraints/RodConstraint.h"
-#include "constraints/LineConstraint.h"
-#include "constraints/CircularWireConstraint.h"
-#include "forces/GravityForce.h"
-#include "forces/WallForce.h"
-
-#include <iostream>
+#include "forces/DampeningForce.h"
 
 #include "solvers/EulerianSolver.h"
 #include "solvers/ForwardEulerianSolver.h"
 #include "solvers/MidPointSolver.h"
-
-#include "forces/DampeningForce.h"
 #include "solvers/Runge4Solver.h"
-#include "SceneBuilder.h"
 
+#include "SceneBuilder.h"
 
 #include <GL/glut.h>
 
@@ -450,7 +443,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.22f; //(max 2.03f runge4)
+        dt = 0.02f;
         d = 5.f;
     } else {
         N = atoi(argv[1]);
