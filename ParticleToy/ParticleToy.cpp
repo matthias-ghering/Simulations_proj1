@@ -6,9 +6,11 @@
 #include "forces/SpringForce.h"
 #include "constraints/RodConstraint.h"
 #include "constraints/DotConstraint.h"
+#include "constraints/LineConstraint.h"
 #include "constraints/WallConstraint.h"
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
+#include "objects/Cloth.h"
 
 #include <iostream>
 
@@ -68,86 +70,20 @@ static void clear_data(void) {
 }
 
 static void init_system(void) {
-    const float dist = 1.6;
-    const Vec2f lower_left_corner(-0.8, -0.8);
+    const float dist = 0.2;
+
     const Vec2f center(0.0, 0.0);
     const Vec2f offset(0.2, 0.0);
-    /*
-    //size of cloth
-    int x_=2;
-    int y_=2;
-
-    //spring variables
-    const float ks_near = 30;
-    const float kd_near = 3;
-    const float ks_cross = 10;
-    const float kd_cross = 1;
-
-    //cloth uses center as lower left corner
-
-    for (int i = 0; i < x_; i++) {
-        for (int j = 0; j < y_; j++) {
-            //add particle
-            pVector.push_back(new Particle(lower_left_corner + Vec2f(dist*i,dist*j)));
-            //add gravity
-            fVector.push_back(new GravityForce(pVector[j+i*y_]));
-        }
-    }
-
-    //add vertical structural springs
-    for (int i = 0; i < x_; i++) {
-        for (int j = 0; j < y_-1; j++) {
-            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+1], dist , ks_near, kd_near));
-        }
-    }
-
-    //add horizontal structural springs
-    for (int i = 0; i < x_-1; i++) {
-        for (int j = 0; j < y_; j++) {
-            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+y_], dist , ks_near, kd_near));
-        }
-    }
-
-    //add shear springs
-    for (int i = 0; i < x_-1; i++) {
-        for (int j = 0; j < y_-1; j++) {
-            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+y_+1], sqrt(pow(dist,2)*2) , ks_cross, kd_cross));
-            fVector.push_back(new SpringForce(pVector[j+i*y_+1],pVector[(j+i*y_)+y_], sqrt(pow(dist,2)*2) , ks_cross, kd_cross));
-        }
-    }
-    */
-    //fVector.push_back(new GravityForce(pVector[2]));
-    //fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
-    //fVector.push_back(new SpringForce(pVector[2],pVector[1], 0.4 , 0.1, 0.01));
-
-    //cVector.push_back(new CircularWireConstraint(pVector[0], lower_left_corner-Vec2f(0+dist,0), dist));
-    //cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
-
-    //cVector.push_back(new CircularWireConstraint(pVector[4], lower_left_corner-Vec2f(0,-dist*5), dist));
-    //cVector.push_back(new CircularWireConstraint(pVector[19], lower_left_corner-Vec2f(-dist*4,-dist*5), dist));
-/*
-    pVector.push_back(new Particle(center));
-    pVector.push_back(new Particle(center - offset));
-
-    fVector.push_back(new GravityForce(pVector[0]));
-    fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
-    cVector.push_back(new DotConstraint(pVector[0],center));
-    //cVector.push_back(new DotConstraint(pVector[3],Vec2f(0.8,0.8)));
-
-
-    pVector.push_back(new Particle(lower_left_corner - offset));
-    pVector.push_back(new Particle(lower_left_corner - offset - offset));
-    cVector.push_back(new RodConstraint(pVector.back(), pVector.end()[-2], dist));
-    pVector.push_back(new Particle(lower_left_corner - offset));
-    pVector.push_back(new Particle(lower_left_corner - offset - offset));
-    cVector.push_back(new RodConstraint(pVector.back(), pVector.end()[-2], dist));
-  */
 
     particleSystem = new ParticleSystem();
 
+
+    Cloth::Cloth(particleSystem);
+
+
     particleSystem->particles.push_back(new Particle(center + offset));
     particleSystem->particles.push_back(new Particle(center + offset + offset));
-    particleSystem->particles.push_back(new Particle(center + offset + offset + offset));
+    particleSystem->particles.push_back(new Particle(center + Vec2f(0,0.5)));
 
     particleSystem->forces.push_back(new GravityForce(particleSystem->particles[0]));
     particleSystem->forces.push_back(new GravityForce(particleSystem->particles[1]));
@@ -159,7 +95,8 @@ static void init_system(void) {
 
     particleSystem->constraints.push_back(new CircularWireConstraint(particleSystem->particles[0], center, dist));
     particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
-
+    particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[2], 0.5));
+    //particleSystem->constraints.push_back(new DotConstraint(particleSystem->particles[2], Vec2f(0.0,0.5)));
     solver = new ForwardEulerianSolver();
 
 }

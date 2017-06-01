@@ -45,10 +45,14 @@ set(SOURCE_FILES
         ParticleToy/constraints/Constraint.h
         ParticleToy/constraints/ConstraintSolver.h
         ParticleToy/constraints/ConstraintSolver.cpp
-        ParticleToy/SparseMatrix.cpp ParticleToy/SparseMatrix.h
+        ParticleToy/SparseMatrix.cpp
+        ParticleToy/SparseMatrix.h
         ParticleToy/constraints/DotConstraint.cpp
         ParticleToy/constraints/DotConstraint.h
-        ParticleToy/ParticleSystem.cpp ParticleToy/ParticleSystem.h)
+        ParticleToy/constraints/LineConstraint.cpp
+        ParticleToy/constraints/LineConstraint.h
+        ParticleToy/ParticleSystem.cpp
+        ParticleToy/ParticleSystem.h ParticleToy/objects/Cloth.cpp ParticleToy/objects/Cloth.h)
 
 
 find_package (OpenGL REQUIRED)
