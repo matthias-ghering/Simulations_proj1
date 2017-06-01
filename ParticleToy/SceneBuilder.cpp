@@ -30,6 +30,10 @@ ParticleSystem* createCircularWireScene() {
     particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
     particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[1], particleSystem->particles[2], dist));
 
+    particleSystem->forces.push_back(new FloorForce(particleSystem->particles[0], -0.5));
+    particleSystem->forces.push_back(new FloorForce(particleSystem->particles[1], -0.5));
+    particleSystem->forces.push_back(new FloorForce(particleSystem->particles[2], -0.5));
+
     return particleSystem;
 }
 
