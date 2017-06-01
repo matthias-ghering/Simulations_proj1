@@ -19,14 +19,14 @@ double DotConstraint::getCdot() {
 std::vector<Vec2f> DotConstraint::getJ() {
     std::vector<Vec2f> result;
     result.push_back(2.0 * (particles[0]->m_Position - this->m_center));
-    //result.push_back(2.0 * (this->m_center - particles[0]->m_Position));
+    result.push_back(2.0 * (this->m_center - particles[0]->m_Position));
     return result;
 }
 
 std::vector<Vec2f> DotConstraint::getJdot() {
     std::vector<Vec2f> result;
     result.push_back(particles[0]->m_Velocity);
-    //result.push_back(-1.0 *  particles[0]->m_Velocity);
+    result.push_back(-1.0 *  particles[0]->m_Velocity);
     return result;
 }
 

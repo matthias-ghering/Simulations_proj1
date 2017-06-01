@@ -44,6 +44,8 @@ set(SOURCE_FILES
         ParticleToy/forces/DampeningForce.h
         ParticleToy/forces/StaticForce.cpp
         ParticleToy/forces/StaticForce.h
+        ParticleToy/forces/WallForce.cpp
+        ParticleToy/forces/WallForce.h
         ParticleToy/constraints/Constraint.h
         ParticleToy/constraints/ConstraintSolver.h
         ParticleToy/constraints/ConstraintSolver.cpp

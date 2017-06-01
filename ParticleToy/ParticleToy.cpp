@@ -8,9 +8,9 @@
 #include "constraints/RodConstraint.h"
 #include "constraints/DotConstraint.h"
 #include "constraints/LineConstraint.h"
-#include "constraints/WallConstraint.h"
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
+#include "forces/WallForce.h"
 
 #include <iostream>
 
@@ -78,8 +78,8 @@ static ParticleSystem* cloth(ParticleSystem* particleSystem) {
     //spring variables
     const double ks_near = 30;
     const double kd_near = 3;
-    const double ks_cross = 10;
-    const double kd_cross = 1;
+    const double ks_cross = 5;
+    const double kd_cross = 0.5;
 
     //cloth uses center as lower left corner
     for (int i = 0; i < x_; i++) {
@@ -115,7 +115,7 @@ static ParticleSystem* cloth(ParticleSystem* particleSystem) {
 
     particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[8], 0.8));
     particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[80], 0.8));
-    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[8],Vec2f(-2,0)));
+    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[8],Vec2f(-0.2,0)));
     return particleSystem;
 }
 
@@ -123,12 +123,13 @@ static ParticleSystem* cloth(ParticleSystem* particleSystem) {
 static void init_system(void) {
 
     particleSystem = new ParticleSystem();
-    cloth(particleSystem);
+    //cloth(particleSystem);
 
-    /*
     const Vec2f center(0.0, 0.0);
     const Vec2f offset(0.2, 0.0);
     const double dist = 0.2;
+
+
 
     particleSystem->particles.push_back(new Particle(center + offset));
     particleSystem->particles.push_back(new Particle(center + offset + offset));
@@ -144,9 +145,10 @@ static void init_system(void) {
 
     particleSystem->constraints.push_back(new CircularWireConstraint(particleSystem->particles[0], center, dist));
     particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
-    particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[2], 0.5));
+    //particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[2], 0.5));
+    //particleSystem->constraints.push_back(new WallConstraint(particleSystem->particles[2], -0.5));
     //particleSystem->constraints.push_back(new DotConstraint(particleSystem->particles[2], Vec2f(0.0,0.5)));
-    */
+    particleSystem->forces.push_back(new WallForce(particleSystem->particles[2], -0.5));
 
 
 
