@@ -86,7 +86,7 @@ ParticleSystem* createCurtainScene(){
 
     particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[8], 0.8));
     particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[5*9-1], 0.8));
-    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[8],Vec2f(-0.1f,0)));
+    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[8],Vec2f(-0.05f,0)));
 
     return particleSystem;
 
