@@ -359,7 +359,7 @@ void processSolverMenuEvents(int option) {
             break;
         case 1:
             printf("Mid-Point solver selected\n");
-            //solver = new MidPointSolver();
+            solver = new MidPointSolver();
             break;
         case 2:
         default:
