@@ -381,7 +381,10 @@ void processSolverMenuEvents(int option) {
 static void createMenu() {
     sceneMenu = glutCreateMenu(processSceneMenuEvents);
     glutAddMenuEntry("Empty scene", 0);
-    glutAddMenuEntry("Circular wire", 1);
+    glutAddMenuEntry("Curtain", 1);
+    glutAddMenuEntry("Circular wire", 2);
+
+
 
     solverMenu = glutCreateMenu(processSolverMenuEvents);
     glutAddMenuEntry("Forward euler", 0);
@@ -449,7 +452,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.001f; //(max 2.03f runge4)
+        dt = 0.22f; //(max 2.03f runge4)
         d = 5.f;
     } else {
         N = atoi(argv[1]);

@@ -40,10 +40,10 @@ ParticleSystem* createCurtainScene(){
     const Vec2f lower_left_corner(0.0, -0.8);
     const double dist = 0.2;
     //spring variables
-    const double ks_near = 30;
-    const double kd_near = 3;
-    const double ks_cross = 1;
-    const double kd_cross = 0.1;
+    const double ks_near = 10;
+    const double kd_near = 1;
+    const double ks_cross = 0.5;
+    const double kd_cross = 0.05;
 
     ParticleSystem* particleSystem = new ParticleSystem();
 
