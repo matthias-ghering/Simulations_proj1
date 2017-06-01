@@ -27,8 +27,6 @@ set(SOURCE_FILES
         ParticleToy/Particle.h
         ParticleToy/ParticleToy.cpp
         ParticleToy/solvers/Solver.cpp
-        ParticleToy/solvers/EulerianSolver.cpp
-        ParticleToy/solvers/EulerianSolver.h
         ParticleToy/solvers/ForwardEulerianSolver.cpp
         ParticleToy/solvers/ForwardEulerianSolver.h
         ParticleToy/solvers/Runge4Solver.cpp

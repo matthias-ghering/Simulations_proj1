@@ -13,7 +13,6 @@ class Solver {
 public:
     Solver();
 
-    virtual void simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector, float dt) = 0;
     virtual void simulation_step(ParticleSystem* p, float dt) = 0;
 
 protected:

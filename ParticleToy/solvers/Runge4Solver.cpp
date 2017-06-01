@@ -1,15 +1,10 @@
 //
 // Created by Matthias Ghering on 26-5-2017.
 //
-#include "../forces/Force.h"
+
 #include "Runge4Solver.h"
-#include "../constraints/ConstraintSolver.h"
 
 Runge4Solver::Runge4Solver():Solver(){}
-
-void Runge4Solver::simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector,float dt) {
-
-}
 
 void Runge4Solver::simulation_step(ParticleSystem* p, float dt) {
     std::vector<Particle* > pVector = p->particles;
