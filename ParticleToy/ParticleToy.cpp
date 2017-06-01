@@ -71,7 +71,7 @@ static void init_system(void) {
     const float dist = 1.6;
     const Vec2f lower_left_corner(-0.8, -0.8);
     const Vec2f center(0.0, 0.0);
-    const Vec2f offset(0.5, 0.0);
+    const Vec2f offset(0.2, 0.0);
     /*
     //size of cloth
     int x_=2;
@@ -157,8 +157,8 @@ static void init_system(void) {
     particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[1]));
     particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[2]));
 
-    //particleSystem->constraints.push_back(new CircularWireConstraint(particleSystem->particles[0], center, dist));
-    //particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
+    particleSystem->constraints.push_back(new CircularWireConstraint(particleSystem->particles[0], center, dist));
+    particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
 
     solver = new ForwardEulerianSolver();
 

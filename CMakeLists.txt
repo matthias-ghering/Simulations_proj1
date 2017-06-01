@@ -47,7 +47,7 @@ set(SOURCE_FILES
         ParticleToy/constraints/ConstraintSolver.cpp
         ParticleToy/SparseMatrix.cpp ParticleToy/SparseMatrix.h
         ParticleToy/constraints/DotConstraint.cpp
-        ParticleToy/constraints/DotConstraint.h)
+        ParticleToy/constraints/DotConstraint.h
         ParticleToy/ParticleSystem.cpp ParticleToy/ParticleSystem.h)
 
 
