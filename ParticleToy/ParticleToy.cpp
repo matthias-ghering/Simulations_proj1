@@ -4,7 +4,7 @@
 #include "Particle.h"
 
 #include "forces/SpringForce.h"
-#include "forces/StaticForce.h"
+//#include "forces/StaticForce.h"
 #include "constraints/RodConstraint.h"
 #include "constraints/DotConstraint.h"
 #include "constraints/LineConstraint.h"
@@ -346,6 +346,10 @@ void processSceneMenuEvents(int option) {
             printf("Created empty scene\n");
             break;
         case 1:
+            particleSystem = createCurtainScene();
+            printf("Created Curtain scene\n");
+            break;
+        case 2:
         default:
             printf("Created circular wire scene\n");
             particleSystem = createCircularWireScene();

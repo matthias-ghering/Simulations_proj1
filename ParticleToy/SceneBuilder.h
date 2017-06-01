@@ -8,10 +8,17 @@
 #include "ParticleSystem.h"
 #include "forces/GravityForce.h"
 #include "forces/DampeningForce.h"
+#include "forces/WallForce.h"
+#include "forces/SpringForce.h"
+#include "forces/StaticForce.h"
 #include "constraints/CircularWireConstraint.h"
 #include "constraints/RodConstraint.h"
+#include "constraints/LineConstraint.h"
+
+
 
 ParticleSystem* createEmptyScene();
 ParticleSystem* createCircularWireScene();
+ParticleSystem* createCurtainScene();
 
 #endif //SIMULATION_1_SCENEBUILDER_H
