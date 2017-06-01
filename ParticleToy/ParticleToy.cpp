@@ -4,6 +4,8 @@
 #include "Particle.h"
 #include "forces/SpringForce.h"
 #include "constraints/RodConstraint.h"
+#include "constraints/DotConstraint.h"
+#include "constraints/WallConstraint.h"
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
 #include <iostream>
@@ -58,42 +60,27 @@ static void clear_data(void) {
 }
 
 static void init_system(void) {
-    const float dist = 0.2;
+    const float dist = 1.6;
+    const Vec2f lower_left_corner(-0.8, -0.8);
     const Vec2f center(0.0, 0.0);
-    const Vec2f offset(dist, 0.0);
-
+    const Vec2f offset(0.5, 0.0);
+    /*
     //size of cloth
-    int x_=4;
-    int y_=3;
+    int x_=2;
+    int y_=2;
 
     //spring variables
-    const float ks = 0.1;
-    const float kd = 0.01;
-
-    /*
-    // Create three particles, attach them to each other, then add a
-    // circular wire constraint to the first.
-
-    pVector.push_back(new Particle(center + offset));
-    pVector.push_back(new Particle(center + offset + offset));
-    pVector.push_back(new Particle(center + offset + offset + offset));
-
-
-
-    fVector.push_back(new GravityForce(pVector[0]));
-    fVector.push_back(new GravityForce(pVector[1]));
-
-
-    fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
-    fVector.push_back(new SpringForce(pVector[2],pVector[1], 0.4 , 0.1, 0.01));
-    */
+    const float ks_near = 30;
+    const float kd_near = 3;
+    const float ks_cross = 10;
+    const float kd_cross = 1;
 
     //cloth uses center as lower left corner
 
     for (int i = 0; i < x_; i++) {
         for (int j = 0; j < y_; j++) {
             //add particle
-            pVector.push_back(new Particle(center + Vec2f(dist*i,dist*j)));
+            pVector.push_back(new Particle(lower_left_corner + Vec2f(dist*i,dist*j)));
             //add gravity
             fVector.push_back(new GravityForce(pVector[j+i*y_]));
         }
@@ -102,36 +89,49 @@ static void init_system(void) {
     //add vertical structural springs
     for (int i = 0; i < x_; i++) {
         for (int j = 0; j < y_-1; j++) {
-            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+1], dist , ks, kd));
+            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+1], dist , ks_near, kd_near));
         }
     }
 
     //add horizontal structural springs
     for (int i = 0; i < x_-1; i++) {
         for (int j = 0; j < y_; j++) {
-            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+y_], dist , ks, kd));
+            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+y_], dist , ks_near, kd_near));
         }
     }
 
     //add shear springs
     for (int i = 0; i < x_-1; i++) {
         for (int j = 0; j < y_-1; j++) {
-            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+y_+1], sqrt(pow(dist,2)*2) , ks, kd));
-            fVector.push_back(new SpringForce(pVector[j+i*y_+1],pVector[(j+i*y_)+y_], sqrt(pow(dist,2)*2) , ks, kd));
+            fVector.push_back(new SpringForce(pVector[j+i*y_],pVector[(j+i*y_)+y_+1], sqrt(pow(dist,2)*2) , ks_cross, kd_cross));
+            fVector.push_back(new SpringForce(pVector[j+i*y_+1],pVector[(j+i*y_)+y_], sqrt(pow(dist,2)*2) , ks_cross, kd_cross));
         }
     }
-
+    */
     //fVector.push_back(new GravityForce(pVector[2]));
     //fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
     //fVector.push_back(new SpringForce(pVector[2],pVector[1], 0.4 , 0.1, 0.01));
 
-    cVector.push_back(new CircularWireConstraint(pVector[0], center-Vec2f(0+dist,0), dist));
+    //cVector.push_back(new CircularWireConstraint(pVector[0], lower_left_corner-Vec2f(0+dist,0), dist));
     //cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
 
-    pVector.push_back(new Particle(center - offset));
-    pVector.push_back(new Particle(center - offset - offset));
+    //cVector.push_back(new CircularWireConstraint(pVector[4], lower_left_corner-Vec2f(0,-dist*5), dist));
+    //cVector.push_back(new CircularWireConstraint(pVector[19], lower_left_corner-Vec2f(-dist*4,-dist*5), dist));
 
-    cVector.push_back(new CircularWireConstraint(pVector[0], center-Vec2f(dist,0), dist));
+    pVector.push_back(new Particle(center));
+    pVector.push_back(new Particle(center - offset));
+
+    fVector.push_back(new GravityForce(pVector[0]));
+    fVector.push_back(new SpringForce(pVector[0],pVector[1], 0.4 , 0.1, 0.01));
+    cVector.push_back(new DotConstraint(pVector[0],center));
+    //cVector.push_back(new DotConstraint(pVector[3],Vec2f(0.8,0.8)));
+
+
+    pVector.push_back(new Particle(lower_left_corner - offset));
+    pVector.push_back(new Particle(lower_left_corner - offset - offset));
+    cVector.push_back(new RodConstraint(pVector.back(), pVector.end()[-2], dist));
+    pVector.push_back(new Particle(lower_left_corner - offset));
+    pVector.push_back(new Particle(lower_left_corner - offset - offset));
     cVector.push_back(new RodConstraint(pVector.back(), pVector.end()[-2], dist));
 
 }
@@ -180,7 +180,6 @@ static void draw_particles(void) {
     int size = pVector.size();
     for (int i = 0; i < size; i++) {
         pVector[i]->draw();
-        //std::cout << i << "  " << pVector[i]->m_Position << "\n ";
     }
 }
 
@@ -377,10 +376,15 @@ static void reshape_func(int width, int height) {
 static void idle_func(void) {
     if (dsim){
         simulation_step(pVector, fVector, cVector, dt);
+        //TODO remove
+        //pVector[8]->m_Position = Vec2f(-0.8,0.8);
+        //pVector[80]->m_Position = Vec2f(0.8,0.8);
         if(mouse_down[0] == 1){//Make sure the mouse particle does not move when it is hold
             float loc_x = (float)mx/(float)win_x*2.0-1.0;
             float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
             pVector.back()->m_Position = Vec2f(loc_x,loc_y);
+
+
         }
     }
     else {
@@ -461,7 +465,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.2f;
+        dt = 0.02f;
         d = 5.f;
     } else {
         N = atoi(argv[1]);
