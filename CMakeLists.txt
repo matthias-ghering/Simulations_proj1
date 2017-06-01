@@ -46,7 +46,7 @@ set(SOURCE_FILES
         ParticleToy/constraints/ConstraintSolver.h
         ParticleToy/constraints/ConstraintSolver.cpp
         ParticleToy/SparseMatrix.cpp
-        ParticleToy/SparseMatrix.h ParticleToy/ParticleSystem.cpp ParticleToy/ParticleSystem.h ParticleToy/SceneBuilder.cpp ParticleToy/SceneBuilder.h)
+        ParticleToy/SparseMatrix.h ParticleToy/ParticleSystem.cpp ParticleToy/ParticleSystem.h ParticleToy/SceneBuilder.cpp ParticleToy/SceneBuilder.h ParticleToy/solvers/ImplicitEulerSolver.cpp ParticleToy/solvers/ImplicitEulerSolver.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)

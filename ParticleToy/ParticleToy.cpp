@@ -13,6 +13,7 @@
 #include "forces/DampeningForce.h"
 #include "solvers/Runge4Solver.h"
 #include "SceneBuilder.h"
+#include "solvers/ImplicitEulerSolver.h"
 
 #include <GL/glut.h>
 
@@ -343,18 +344,22 @@ void processSolverMenuEvents(int option) {
     delete(solver);
 
     switch(option) {
-        case 0:
-            printf("ForwardEuler solver selected\n");
-            solver = new ForwardEulerianSolver();
-            break;
         case 1:
             printf("Mid-Point solver selected\n");
             //solver = new MidPointSolver();
             break;
         case 2:
-        default:
             printf("Runge-Kutta 4th order solver selected\n");
             //solver = new Runge4Solver();
+            break;
+        case 3:
+            printf("Implicit Euler solver selected\n");
+            solver = new ImplicitEulerSolver();
+            break;
+        case 0:
+        default:
+            printf("ForwardEuler solver selected\n");
+            solver = new ForwardEulerianSolver();
     }
 }
 
@@ -368,6 +373,7 @@ static void createMenu() {
     glutAddMenuEntry("Forward euler", 0);
     glutAddMenuEntry("Mid-point", 1);
     glutAddMenuEntry("Runge-kutta 4", 2);
+    glutAddMenuEntry("Implicit Euler", 3);
 
     mainMenu = glutCreateMenu(0);
     glutAddSubMenu("Scenes", sceneMenu);
