@@ -2,20 +2,26 @@
 //
 
 #include "Particle.h"
+
 #include "forces/SpringForce.h"
 #include "constraints/RodConstraint.h"
 #include "constraints/DotConstraint.h"
 #include "constraints/WallConstraint.h"
 #include "constraints/CircularWireConstraint.h"
 #include "forces/GravityForce.h"
+
 #include <iostream>
+
+#include "EulerianSolver.h"
+#include "ForwardEulerianSolver.h"
+#include "MidPointSolver.h"
+#include "forces/DampeningForce.h"
+#include "Runge4Solver.h"
+
 
 #include <GL/glut.h>
 
 /* macros */
-
-/* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector, float dt);
 
 /* global variables */
 
@@ -26,9 +32,9 @@ static int dump_frames;
 static int frame_number;
 
 //Particle and Force vectors
-static std::vector<Particle *> pVector;
-static std::vector<Force *> fVector;
-static std::vector<Constraint *> cVector;
+//static std::vector<Particle *> pVector;
+//static std::vector<Force *> fVector;
+//static std::vector<Constraint *> cVector;
 
 static int win_id;
 static int win_x, win_y;
@@ -37,8 +43,8 @@ static int mouse_release[3];
 static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
-
-
+static Solver* solver;
+static ParticleSystem* particleSystem;
 /*
 ----------------------------------------------------------------------
 free/clear/allocate simulation data
@@ -46,16 +52,18 @@ free/clear/allocate simulation data
 */
 
 static void free_data(void) {
-    pVector.clear();
-    fVector.clear();
-    cVector.clear();
+    particleSystem->particles.clear();
+    particleSystem->particles.clear();
+    particleSystem->particles.clear();
+    delete(solver);
+    delete(particleSystem);
 }
 
 static void clear_data(void) {
-    int size = pVector.size();
+    int size = particleSystem->particles.size();
 
     for (int i = 0; i < size; i++) {
-        pVector[i]->reset();
+        particleSystem->particles[i]->reset();
     }
 }
 
@@ -117,7 +125,7 @@ static void init_system(void) {
 
     //cVector.push_back(new CircularWireConstraint(pVector[4], lower_left_corner-Vec2f(0,-dist*5), dist));
     //cVector.push_back(new CircularWireConstraint(pVector[19], lower_left_corner-Vec2f(-dist*4,-dist*5), dist));
-
+/*
     pVector.push_back(new Particle(center));
     pVector.push_back(new Particle(center - offset));
 
@@ -133,6 +141,26 @@ static void init_system(void) {
     pVector.push_back(new Particle(lower_left_corner - offset));
     pVector.push_back(new Particle(lower_left_corner - offset - offset));
     cVector.push_back(new RodConstraint(pVector.back(), pVector.end()[-2], dist));
+  */
+
+    particleSystem = new ParticleSystem();
+
+    particleSystem->particles.push_back(new Particle(center + offset));
+    particleSystem->particles.push_back(new Particle(center + offset + offset));
+    particleSystem->particles.push_back(new Particle(center + offset + offset + offset));
+
+    particleSystem->forces.push_back(new GravityForce(particleSystem->particles[0]));
+    particleSystem->forces.push_back(new GravityForce(particleSystem->particles[1]));
+    particleSystem->forces.push_back(new GravityForce(particleSystem->particles[2]));
+
+    particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[0]));
+    particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[1]));
+    particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[2]));
+
+    //particleSystem->constraints.push_back(new CircularWireConstraint(particleSystem->particles[0], center, dist));
+    //particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
+
+    solver = new ForwardEulerianSolver();
 
 }
 
@@ -177,26 +205,16 @@ static void post_display(void) {
 }
 
 static void draw_particles(void) {
-    int size = pVector.size();
-    for (int i = 0; i < size; i++) {
-        pVector[i]->draw();
-    }
+    particleSystem->drawParticles();
+
 }
 
 static void draw_forces(void) {
-    // change this to iteration over full set
-    int size = fVector.size();
-    for (int i = 0; i < size; i++) {
-        fVector[i]->draw();
-    }
-
-
+    particleSystem->drawForces();
 }
 
 static void draw_constraints(void) {
-    for (int i = 0; i < cVector.size(); i++) {
-        cVector[i]->draw();
-    }
+    particleSystem->drawConstraints();
 }
 
 /*
@@ -237,10 +255,10 @@ static void get_from_UI() {
 }
 
 static void remap_GUI() {
-    int i, size = pVector.size();
+    int i, size = particleSystem->particles.size();
     for (i = 0; i < size; i++) {
-        pVector[i]->m_Position[0] = pVector[i]->m_ConstructPos[0];
-        pVector[i]->m_Position[1] = pVector[i]->m_ConstructPos[1];
+        particleSystem->particles[i]->m_Position[0] = particleSystem->particles[i]->m_ConstructPos[0];
+        particleSystem->particles[i]->m_Position[1] = particleSystem->particles[i]->m_ConstructPos[1];
     }
 }
 
@@ -291,18 +309,18 @@ static float distanceSq(Particle* p1, Particle* p2){
  * @return the closest particle to the given particle.
  */
 static Particle* closesParticle(Particle* particle){
-    int pSize = pVector.size();
+    int pSize = particleSystem->particles.size();
     Particle * closest;
     float cDist;
     for(int i = 0; i < pSize; i++){
         if(i==0) {
-            closest = pVector[0];
+            closest = particleSystem->particles[0];
             cDist = distanceSq(closest, particle);
         }
         else{
-            float nxtDist = distanceSq(pVector[i],particle);
+            float nxtDist = distanceSq(particleSystem->particles[i],particle);
             if(cDist > nxtDist){
-                closest = pVector[i];
+                closest = particleSystem->particles[i];
                 cDist = nxtDist;
             }
         }
@@ -334,9 +352,9 @@ static void mouse_func(int button, int state, int x, int y) {
         if (closestPart &&(
                 mousePoint->m_Position[0] != closestPart->m_Position[0]
             || mousePoint->m_Position[1] != closestPart->m_Position[1])) {
-            pVector.push_back(mousePoint);
+            particleSystem->particles.push_back(mousePoint);
 
-            fVector.push_back(
+            particleSystem->forces.push_back(
                 new SpringForce(mousePoint, closestPart, sqrt(distanceSq(mousePoint, closestPart)), 0.1, 0.01));
             printf("create new particle at: %f, %f\n", mousePoint->m_ConstructPos[0], mousePoint->m_ConstructPos[1]);
         }
@@ -361,7 +379,7 @@ static void motion_func(int x, int y) {
 
     float loc_x = (float)mx/(float)win_x*2.0-1.0;
     float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
-    pVector.back()->m_Position =  Vec2f(loc_x,loc_y);
+    particleSystem->particles.back()->m_Position =  Vec2f(loc_x,loc_y);
     printf("move to: %f, %f\n",loc_x,loc_y);
 }
 
@@ -375,16 +393,11 @@ static void reshape_func(int width, int height) {
 
 static void idle_func(void) {
     if (dsim){
-        simulation_step(pVector, fVector, cVector, dt);
-        //TODO remove
-        //pVector[8]->m_Position = Vec2f(-0.8,0.8);
-        //pVector[80]->m_Position = Vec2f(0.8,0.8);
+        solver->simulation_step(particleSystem, dt);
         if(mouse_down[0] == 1){//Make sure the mouse particle does not move when it is hold
             float loc_x = (float)mx/(float)win_x*2.0-1.0;
             float loc_y = 0-((float)my/(float)win_y*2.0-1.0);
-            pVector.back()->m_Position = Vec2f(loc_x,loc_y);
-
-
+            particleSystem->particles.back()->m_Position = Vec2f(loc_x,loc_y);
         }
     }
     else {
@@ -465,7 +478,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.02f;
+        dt = 0.02f; //(max 2.03f runge4)
         d = 5.f;
     } else {
         N = atoi(argv[1]);

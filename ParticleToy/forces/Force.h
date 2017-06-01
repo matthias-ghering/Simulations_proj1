@@ -2,8 +2,8 @@
 // Created by Matthias Ghering on 23-5-2017.
 //
 
-#ifndef SIMULATION_1_FORCE_H
-#define SIMULATION_1_FORCE_H
+#ifndef SIMULATIONS_PROJ1_FORCE_H
+#define SIMULATIONS_PROJ1_FORCE_H
 #include <gfx/vec2.h>
 #include <GL/gl.h>
 #include "../Particle.h"
@@ -17,4 +17,4 @@ public:
 };
 
 
-#endif //SIMULATION_1_FORCE_H
+#endif //SIMULATIONS_PROJ1_FORCE_H
