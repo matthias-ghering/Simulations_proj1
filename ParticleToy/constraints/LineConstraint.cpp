@@ -6,7 +6,7 @@ LineConstraint::LineConstraint(Particle *p1, double fixed_y) : m_y(fixed_y) {
 }
 
 double LineConstraint:: getC() {
-    float diff = this->particles[0]->m_Position[1] - this->m_y; //|x_1 -x_2|-r
+    float diff = this->particles[0]->m_Position[1] - this->m_y;
     return diff;
 }
 

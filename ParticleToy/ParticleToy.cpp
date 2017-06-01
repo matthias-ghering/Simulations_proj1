@@ -71,15 +71,15 @@ static void clear_data(void) {
 
 static ParticleSystem* cloth(ParticleSystem* particleSystem) {
 
-    int x_=9;
+    int x_=5;
     int y_=9;
-    const Vec2f lower_left_corner(-0.8, -0.8);
+    const Vec2f lower_left_corner(0.0, -0.8);
     const double dist = 0.2;
     //spring variables
     const double ks_near = 30;
     const double kd_near = 3;
-    const double ks_cross = 5;
-    const double kd_cross = 0.5;
+    const double ks_cross = 1;
+    const double kd_cross = 0.1;
 
     //cloth uses center as lower left corner
     for (int i = 0; i < x_; i++) {
@@ -88,6 +88,7 @@ static ParticleSystem* cloth(ParticleSystem* particleSystem) {
             particleSystem->particles.push_back(new Particle(lower_left_corner + Vec2f(dist*i,dist*j)));
             //add gravity
             particleSystem->forces.push_back(new GravityForce(particleSystem->particles[j+i*y_]));
+            particleSystem->forces.push_back(new WallForce(particleSystem->particles[j+i*y_], -0.5));
         }
     }
 
@@ -113,8 +114,9 @@ static ParticleSystem* cloth(ParticleSystem* particleSystem) {
         }
     }
 
+
     particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[8], 0.8));
-    particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[80], 0.8));
+    particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[5*9-1], 0.8));
     particleSystem->forces.push_back(new StaticForce(particleSystem->particles[8],Vec2f(-0.2,0)));
     return particleSystem;
 }
@@ -123,14 +125,14 @@ static ParticleSystem* cloth(ParticleSystem* particleSystem) {
 static void init_system(void) {
 
     particleSystem = new ParticleSystem();
-    //cloth(particleSystem);
+    cloth(particleSystem);
 
     const Vec2f center(0.0, 0.0);
     const Vec2f offset(0.2, 0.0);
     const double dist = 0.2;
 
 
-
+    /*
     particleSystem->particles.push_back(new Particle(center + offset));
     particleSystem->particles.push_back(new Particle(center + offset + offset));
     particleSystem->particles.push_back(new Particle(center + Vec2f(0,0.5)));
@@ -149,7 +151,7 @@ static void init_system(void) {
     //particleSystem->constraints.push_back(new WallConstraint(particleSystem->particles[2], -0.5));
     //particleSystem->constraints.push_back(new DotConstraint(particleSystem->particles[2], Vec2f(0.0,0.5)));
     particleSystem->forces.push_back(new WallForce(particleSystem->particles[2], -0.5));
-
+*/
 
 
     solver = new ForwardEulerianSolver();
