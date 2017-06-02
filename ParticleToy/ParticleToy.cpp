@@ -478,7 +478,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.05f;
+        dt = 0.1f;
         d = 5.f;
     } else {
         N = atoi(argv[1]);
