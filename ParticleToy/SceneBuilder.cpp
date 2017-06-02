@@ -109,7 +109,6 @@ ParticleSystem* createSimpleClothScene(){
             particleSystem->particles.push_back(new Particle(lower_left_corner + Vec2f(dist*i,dist*j)));
             //add gravity
             particleSystem->forces.push_back(new GravityForce(particleSystem->particles[j+i*y_]));
-            //particleSystem->forces.push_back(new WallForce(particleSystem->particles[j+i*y_], -0.5));
         }
     }
 
@@ -219,16 +218,6 @@ ParticleSystem* createSimpleAngularSprings() {
                 new AngularSpringForce(particleSystem->particles[i * 3], particleSystem->particles[i * 3 + 1],
                                        particleSystem->particles[i * 3 + 2], curlRestDist, curlAngle, 0.1, 0.0001));
     }
-    Particle * p1 = new Particle(Vec2f(0.0,0.0));
-    Particle * p2 = new Particle(Vec2f(0.0,0.2));
-    particleSystem->particles.push_back(p1);
-    particleSystem->particles.push_back(p2);
-
-    particleSystem->forces.push_back(new SpringForce(p1,p2,0.15,0.001,0.1));
-    particleSystem->forces.push_back(new SpringForce(p2,p1,0.15,0.001,0.1));
-
-
-
 
     return particleSystem;
 }
