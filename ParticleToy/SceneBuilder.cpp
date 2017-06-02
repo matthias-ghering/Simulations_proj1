@@ -153,7 +153,7 @@ ParticleSystem* createSimpleAngularSprings() {
         particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i*3+1]));
         particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i*3+2]));
         particleSystem->forces.push_back(new AngularSpringForce(particleSystem->particles[i*3]
-                ,particleSystem->particles[i*3+1],particleSystem->particles[i*3+2],curlRestDist,curlAngle, 0.1, 0.005));
+                ,particleSystem->particles[i*3+1],particleSystem->particles[i*3+2],curlRestDist,curlAngle, 0.1, 0.0001));
     }
 
 
