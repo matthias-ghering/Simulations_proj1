@@ -23,6 +23,7 @@ protected:
     float const DAMP = 0.98f;
 
     void scaleVector(std::vector<float>& a, float dt);
+    void scaleVector(std::vector<float>& a, float dt, std::vector<float>& dst);
     void addVectors(std::vector<float>& src1, std::vector<float>& src2, std::vector<float>& dst);
 
 private:
