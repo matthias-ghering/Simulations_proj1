@@ -67,9 +67,6 @@ void Runge4Solver::simulation_step2(ParticleSystem* p, float dt) {
         pVector[i]->m_Position = initpVector[i] + k1[i]/6 + k2[i]/3 + k3[i]/3 + k4[i]/6;    //Calculate the new position using k1,k2,k3 and k4.
     }
 
-    //This print statement slows down execution
-    //printf("pos: (%f, %f)\tvel: (%f, %f)\n",
-    //       pVector[0]->m_Position[0], pVector[0]->m_Position[1], pVector[0]->m_Velocity[0], pVector[0]->m_Velocity[1]);
 }
 
 void Runge4Solver::simulation_step(ParticleSystem* p, float dt) {
@@ -78,33 +75,32 @@ void Runge4Solver::simulation_step(ParticleSystem* p, float dt) {
     std::vector<Constraint* > cVector = p->constraints;
 
     unsigned dim = (this->getDim(p));
-    std::vector<float> initpVector(dim), tmpfVector(dim),k1(dim), k2(dim), k3(dim), k4(dim);
+    std::vector<float> initpVector(dim), tmpfVector(dim),k1(dim), k2(dim), k3(dim), k4(dim), test(dim), midPt(dim);
 
     this->getState(p, initpVector);                 //Save starting point and velocities.
 
     this->derivEval(p, tmpfVector);                 //Calculate Forces and constraints and save force and velocity to tmp1.
     this->scaleVector(tmpfVector, dt*0.5f);         //Take 0.5dt step to midpoint of k1.
-    this->addVectors(initpVector,tmpfVector ,k1);   //Save midpoint k1 to k1.
-    this->setState(p, k1);                          //Move ParticleSystem to mid point k1.
-    this->addVectors(k1,tmpfVector,k1);             //Make complete step of k1 and save for later use.
+    this->addVectors(initpVector,tmpfVector ,midPt);//Save midpoint k1 to k1.
+    this->setState(p, midPt);                       //Move ParticleSystem to mid point k1.
+    this->scaleVector(tmpfVector, 2.0f, k1);        //Make complete step of k1 and save for later use.
+
 
     this->derivEval(p,tmpfVector);                  //Calculate Forces and constraints and save force and velocity at mid point.
     this->scaleVector(tmpfVector, dt*0.5f);         //Take 0.5dt step to midpoint of k2.
-    this->addVectors(initpVector,tmpfVector ,k2);   //Save midpoint k2 to k2.
-    this->setState(p, k2);                          //Move ParticleSystem to mid point k1.
-    this->addVectors(k2,tmpfVector,k2);             //Make complete step of k1 and save for later use.
+    this->addVectors(initpVector,tmpfVector ,midPt);//Save midpoint k2 to k2.
+    this->setState(p, midPt);                       //Move ParticleSystem to mid point k2.
+    this->scaleVector(tmpfVector, 2.0f, k2);        //Make complete step of k2 and save for later use.
 
-    this->derivEval(p,tmpfVector);
-    this->scaleVector(tmpfVector, dt);              //Complete step to k3
-    this->addVectors(initpVector,tmpfVector ,k3);
-    this->setState(p, k3);
+    this->derivEval(p,k3);
+    this->scaleVector(k3, dt);                      //Complete step to k3
+    this->addVectors(initpVector,tmpfVector, midPt);
+    this->setState(p, midPt);
 
-    this->derivEval(p,tmpfVector);
-    this->scaleVector(tmpfVector, dt);
-    this->addVectors(initpVector,tmpfVector ,k4);
+    this->derivEval(p,k4);
+    this->scaleVector(k4, dt);
 
     //Total computation:
-
     this->scaleVector(k1,1.0f/6.0f);
     this->scaleVector(k2,1.0f/3.0f);
     this->scaleVector(k3,1.0f/3.0f);
@@ -116,7 +112,4 @@ void Runge4Solver::simulation_step(ParticleSystem* p, float dt) {
 
     this->setState(p,initpVector);
 
-    //This print statement slows down execution
-    //printf("pos: (%f, %f)\tvel: (%f, %f)\n",
-    //       pVector[0]->m_Position[0], pVector[0]->m_Position[1], pVector[0]->m_Velocity[0], pVector[0]->m_Velocity[1]);
 }

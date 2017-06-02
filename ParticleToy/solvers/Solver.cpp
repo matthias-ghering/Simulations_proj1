@@ -69,6 +69,12 @@ void Solver::scaleVector(std::vector<float>& a, float dt) {
         a[i] *= dt;
     }
 }
+
+void Solver::scaleVector(std::vector<float>& a, float dt, std::vector<float>& dst) {
+    for (int i = 0; i < a.size(); i++) {
+        dst[i] = a[i] * dt;
+    }
+}
 /**
  * addVectors adds two vectors.
  * @param src1
