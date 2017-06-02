@@ -11,7 +11,6 @@
 #include "solvers/Runge4Solver.h"
 #include "SceneBuilder.h"
 
-
 #include <GL/glut.h>
 
 /* macros */
@@ -61,12 +60,10 @@ static void clear_data(void) {
 }
 
 
-
 static void init_system(void) {
 
     particleSystem = new ParticleSystem();
     solver = new ForwardEulerianSolver();
-
 
 }
 
@@ -331,8 +328,9 @@ static void idle_func(void) {
 static void display_func(void) {
     pre_display();
 
-    draw_forces();
+
     draw_constraints();
+    draw_forces();
     draw_particles();
 
     post_display();
@@ -358,17 +356,22 @@ void processSceneMenuEvents(int option) {
             printf("Created Curtain scene\n");
             break;
         case 2:
-            printf("Created circular wire scene\n");
-            particleSystem = createCircularWireScene();
-            break;
-        case 3:
             printf("Created create simple angular spring\n");
             particleSystem = createSimpleAngularSprings();
             break;
-        case 4:
+        case 3:
             printf("Created create angular springs hair\n");
             particleSystem = createHairAngularSprings();
             break;
+        case 4:
+            particleSystem = createCurtain2Scene();
+            printf("Created Curtain2 scene\n");
+            break;
+        case 5:
+            particleSystem = createSimpleClothScene();
+            printf("Created SimpleCloth scene\n");
+            break;
+        case 6:
         default:
             printf("Created circular wire scene\n");
             particleSystem = createCircularWireScene();
@@ -401,9 +404,11 @@ static void createMenu() {
     sceneMenu = glutCreateMenu(processSceneMenuEvents);
     glutAddMenuEntry("Empty scene", 0);
     glutAddMenuEntry("Curtain", 1);
-    glutAddMenuEntry("Circular wire", 2);
-    glutAddMenuEntry("Simple AngularSprings", 3);
-    glutAddMenuEntry("AngularSprings", 4);
+    glutAddMenuEntry("Simple AngularSprings", 2);
+    glutAddMenuEntry("AngularSprings", 3);
+    glutAddMenuEntry("Curtain2", 4);
+    glutAddMenuEntry("SimpleCloth", 5);
+    glutAddMenuEntry("Circular Wire", 6);
 
 
 
@@ -473,9 +478,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-
-        dt = 0.02f;
-
+        dt = 0.05f;
         d = 5.f;
     } else {
         N = atoi(argv[1]);
