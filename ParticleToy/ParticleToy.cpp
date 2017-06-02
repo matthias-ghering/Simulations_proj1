@@ -4,8 +4,6 @@
 #include "forces/SpringForce.h"
 #include "constraints/RodConstraint.h"
 
-#include "forces/GravityForce.h"
-#include "forces/AngularSpringForce.h"
 #include "forces/DampeningForce.h"
 
 #include "solvers/ForwardEulerianSolver.h"
@@ -71,7 +69,6 @@ static void init_system(void) {
 
 
 }
-
 
 
 /*

@@ -1,7 +1,3 @@
-//
-// Created by woute on 27/05/2017.
-//
-
 #include "SparseMatrix.h"
 
 /*

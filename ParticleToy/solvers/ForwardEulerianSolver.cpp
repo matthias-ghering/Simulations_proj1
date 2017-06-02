@@ -1,6 +1,3 @@
-//
-// Created by Matthias Ghering on 26-5-2017.
-//
 #include "ForwardEulerianSolver.h"
 
 ForwardEulerianSolver::ForwardEulerianSolver():Solver(){}

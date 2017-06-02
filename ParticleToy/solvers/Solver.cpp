@@ -1,8 +1,6 @@
 #include "../Particle.h"
 #include "Solver.h"
 
-//#define DAMP 0.98f
-
 Solver::Solver() {
     this->constraintSolver = new ConstraintSolver();
 }

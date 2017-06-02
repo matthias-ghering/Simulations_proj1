@@ -1,7 +1,3 @@
-//
-// Created by woute on 31/05/2017.
-//
-
 #include "ParticleSystem.h"
 
 ParticleSystem::ParticleSystem() {
