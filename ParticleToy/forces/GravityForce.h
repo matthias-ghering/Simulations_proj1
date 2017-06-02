@@ -1,7 +1,3 @@
-//
-// Created by Matthias Ghering on 23-5-2017.
-//
-
 #ifndef SIMULATIONS_PROJ1_GRAVITYFORCE_H
 #define SIMULATIONS_PROJ1_GRAVITYFORCE_H
 

@@ -1,7 +1,3 @@
-//
-// Created by Matthias Ghering on 26-5-2017.
-//
-
 #ifndef SIMULATIONS_PROJ1_RUNGE4SOLVER_H
 #define SIMULATIONS_PROJ1_RUNGE4SOLVER_H
 

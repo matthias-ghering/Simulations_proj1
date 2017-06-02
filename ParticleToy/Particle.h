@@ -21,8 +21,6 @@ public:
     Vec2f m_Position;
     Vec2f m_Velocity;
     Vec2f m_Force;
-    Vec2f tmp_Position; //this is used to temporary save the position before mid point
-    Vec2f tmp_Velocity;
     float m_Mass;
     int index;
 

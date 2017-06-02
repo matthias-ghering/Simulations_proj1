@@ -1,7 +1,3 @@
-//
-// Created by woute on 27/05/2017.
-//
-
 #ifndef SIMULATION_1_SPARSEMATRIX_H
 #define SIMULATION_1_SPARSEMATRIX_H
 

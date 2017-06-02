@@ -15,7 +15,7 @@ private:
     Particle *const m_p2;   // particle 2
     Particle *const m_p3;   // particle 2
     double const m_dist;    // rest length
-    //float m_correctSide;  // This can in the future be used to store if the angle is initially on the correct side.
+    float originOrient;
     double m_rstAngle;
     double const m_ks, m_kd; // spring strength constants
 };

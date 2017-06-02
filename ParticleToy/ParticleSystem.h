@@ -1,10 +1,5 @@
-//
-// Created by woute on 31/05/2017.
-//
-
 #ifndef SIMULATION_1_PARTICLESYSTEM_H
 #define SIMULATION_1_PARTICLESYSTEM_H
-
 
 #include <vector>
 #include "Particle.h"
