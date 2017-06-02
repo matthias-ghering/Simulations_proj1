@@ -17,25 +17,49 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}
 
 
 set(SOURCE_FILES
+        ParticleToy/constraints/RodConstraint.cpp
+        ParticleToy/constraints/RodConstraint.h
         ParticleToy/constraints/CircularWireConstraint.cpp
         ParticleToy/constraints/CircularWireConstraint.h
-        ParticleToy/linearSolver.cpp
-        ParticleToy/linearSolver.h
+        ParticleToy/solvers/linearSolver.cpp
+        ParticleToy/solvers/linearSolver.h
         ParticleToy/Particle.cpp
         ParticleToy/Particle.h
         ParticleToy/ParticleToy.cpp
-        ParticleToy/constraints/RodConstraint.cpp
-        ParticleToy/constraints/RodConstraint.h
-        ParticleToy/Solver.cpp
+        ParticleToy/solvers/Solver.cpp
+        ParticleToy/solvers/EulerianSolver.cpp
+        ParticleToy/solvers/EulerianSolver.h
+        ParticleToy/solvers/ForwardEulerianSolver.cpp
+        ParticleToy/solvers/ForwardEulerianSolver.h
+        ParticleToy/solvers/Runge4Solver.cpp
+        ParticleToy/solvers/Runge4Solver.h
+        ParticleToy/solvers/MidPointSolver.cpp
+        ParticleToy/solvers/MidPointSolver.h
+        ParticleToy/forces/Force.h
         ParticleToy/forces/AngularSpringForce.cpp
         ParticleToy/forces/AngularSpringForce.h
         ParticleToy/forces/SpringForce.cpp
         ParticleToy/forces/SpringForce.h
-        ParticleToy/forces/Force.h
         ParticleToy/forces/GravityForce.cpp
         ParticleToy/forces/GravityForce.h
+        ParticleToy/forces/DampeningForce.cpp
+        ParticleToy/forces/DampeningForce.h
+        ParticleToy/forces/StaticForce.cpp
+        ParticleToy/forces/StaticForce.h
+        ParticleToy/forces/WallForce.cpp
+        ParticleToy/forces/WallForce.h
+        ParticleToy/SparseMatrix.cpp
+        ParticleToy/SparseMatrix.h
         ParticleToy/constraints/Constraint.h
-        ParticleToy/constraints/ConstraintSolver.h ParticleToy/constraints/ConstraintSolver.cpp ParticleToy/SparseMatrix.cpp ParticleToy/SparseMatrix.h)
+        ParticleToy/constraints/ConstraintSolver.h
+        ParticleToy/constraints/ConstraintSolver.cpp
+        ParticleToy/constraints/LineConstraint.cpp
+        ParticleToy/constraints/LineConstraint.h
+        ParticleToy/ParticleSystem.cpp
+        ParticleToy/ParticleSystem.h
+        ParticleToy/SceneBuilder.cpp
+        ParticleToy/SceneBuilder.h)
+
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)

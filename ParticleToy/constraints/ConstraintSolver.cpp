@@ -1,6 +1,8 @@
 
 #include "ConstraintSolver.h"
 
+ConstraintSolver::ConstraintSolver() {}
+
 void ConstraintSolver::init(std::vector<Particle *> particles, std::vector<Constraint *> constraints) {
     // We use n to denote particles.size(), and c for constraints.size()
     for (int i = 0; i < particles.size(); i++) {
@@ -68,14 +70,19 @@ void ConstraintSolver::reset() {
     this->qdot.clear();
     this->Q.clear();
 
-    free(this->C);
-    free(this->Cdot);
-    free(this->J);
-    free(this->JT);
-    free(this->Jdot);
+    delete(this->C);
+    delete(this->Cdot);
+    delete(this->J);
+    delete(this->JT);
+    delete(this->Jdot);
 }
 
 void ConstraintSolver::applyConstraints(std::vector<Particle *> particles, std::vector<Constraint *> constraints, float ks, float kd) {
+    if (constraints.size() == 0) {
+        // Skip constraint calculation
+        return;
+    }
+
     this->init(particles, constraints);
 
     SparseMatrix* JW = new SparseMatrix(constraints.size(), particles.size() * 2);
@@ -121,9 +128,8 @@ void ConstraintSolver::applyConstraints(std::vector<Particle *> particles, std::
         particles[i]->m_Force[1] += QhatT.getValue(2 * i + 1, 0);
     }
 
-    free(JW);
-    free(lambdaT);
-    free(lambdaTarray);
+    delete(JW);
+    delete(lambdaT);
 
     this->reset();
 }

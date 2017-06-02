@@ -3,7 +3,7 @@
 #include "../Particle.h"
 #include "Force.h"
 
-class AngularSpringForce : public Force{ //
+class AngularSpringForce : public Force{
 public:
     AngularSpringForce(Particle *p1, Particle *p2, Particle *p3, double dist, double rstAngle, double ks, double kd);
     void calc_Force() override;

@@ -28,7 +28,7 @@ int SparseMatrix::getRowCount() {
 }
 
 int SparseMatrix::getColCount() {
-    return this->data[0].size();
+    return this->data.size() > 0 ? this->data[0].size() : 0;
 }
 
 double SparseMatrix::getValue(int row, int column) {
