@@ -5,10 +5,6 @@
 
 ForwardEulerianSolver::ForwardEulerianSolver():Solver(){}
 
-void ForwardEulerianSolver::simulation_step(std::vector<Particle *> pVector, std::vector<Force *> fVector, std::vector<Constraint *> cVector, float dt) {
-
-}
-
 void ForwardEulerianSolver::simulation_step(ParticleSystem *p, float dt) {
     std::vector<float> tmp1(this->getDim(p)), tmp2(this->getDim(p));
 

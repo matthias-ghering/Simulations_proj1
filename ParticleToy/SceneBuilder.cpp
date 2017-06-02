@@ -31,6 +31,10 @@ ParticleSystem* createCircularWireScene() {
     particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[0], particleSystem->particles[1], dist));
     particleSystem->constraints.push_back(new RodConstraint(particleSystem->particles[1], particleSystem->particles[2], dist));
 
+    particleSystem->forces.push_back(new FloorForce(particleSystem->particles[0], -0.5));
+    particleSystem->forces.push_back(new FloorForce(particleSystem->particles[1], -0.5));
+    particleSystem->forces.push_back(new FloorForce(particleSystem->particles[2], -0.5));
+
     return particleSystem;
 }
 
@@ -83,7 +87,7 @@ ParticleSystem* createCurtainScene(){
 
     particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[8], 0.8));
     particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[5*9-1], 0.8));
-    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[8],Vec2f(-0.2,0)));
+    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[8],Vec2f(-0.05f,0)));
 
     return particleSystem;
 
@@ -110,14 +114,14 @@ ParticleSystem* createHairAngularSprings() {
 
     for(int i = 0; i < curls-2; i++){
         particleSystem->forces.push_back(new AngularSpringForce(particleSystem->particles[i*2]
-                ,particleSystem->particles[i*2+2],particleSystem->particles[i*2+4],curlRestDist,curlAngle, 0.01, 0.1));
+                ,particleSystem->particles[i*2+2],particleSystem->particles[i*2+4],curlRestDist,curlAngle, 0.001, 0.1));
         particleSystem->forces.push_back(new AngularSpringForce(particleSystem->particles[i*2+1]
-                ,particleSystem->particles[i*2+3],particleSystem->particles[i*2+5],curlRestDist,curlAngle, 0.01, 0.1));
+                ,particleSystem->particles[i*2+3],particleSystem->particles[i*2+5],curlRestDist,curlAngle, 0.001, 0.1));
         particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i]));
         particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i+1]));
     }
 
-    if(curls>10) {
+    if(curls>1) {
         particleSystem->constraints.push_back(
                 new CircularWireConstraint(particleSystem->particles[0], Vec2f(0, 0), 0.2));
         particleSystem->constraints.push_back(

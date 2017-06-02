@@ -11,6 +11,7 @@
 #include "forces/WallForce.h"
 #include "forces/SpringForce.h"
 #include "forces/StaticForce.h"
+#include "forces/FloorForce.h"
 #include "constraints/CircularWireConstraint.h"
 #include "constraints/RodConstraint.h"
 #include "constraints/LineConstraint.h"

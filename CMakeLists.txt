@@ -27,8 +27,6 @@ set(SOURCE_FILES
         ParticleToy/Particle.h
         ParticleToy/ParticleToy.cpp
         ParticleToy/solvers/Solver.cpp
-        ParticleToy/solvers/EulerianSolver.cpp
-        ParticleToy/solvers/EulerianSolver.h
         ParticleToy/solvers/ForwardEulerianSolver.cpp
         ParticleToy/solvers/ForwardEulerianSolver.h
         ParticleToy/solvers/Runge4Solver.cpp
@@ -48,6 +46,8 @@ set(SOURCE_FILES
         ParticleToy/forces/StaticForce.h
         ParticleToy/forces/WallForce.cpp
         ParticleToy/forces/WallForce.h
+        ParticleToy/forces/FloorForce.cpp
+        ParticleToy/forces/FloorForce.h
         ParticleToy/SparseMatrix.cpp
         ParticleToy/SparseMatrix.h
         ParticleToy/constraints/Constraint.h

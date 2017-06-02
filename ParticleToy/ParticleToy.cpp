@@ -1,8 +1,6 @@
 // ParticleToy.cpp : Defines the entry point for the console application.
 //
 
-#include "Particle.h"
-
 #include "forces/SpringForce.h"
 #include "constraints/RodConstraint.h"
 
@@ -10,11 +8,9 @@
 #include "forces/AngularSpringForce.h"
 #include "forces/DampeningForce.h"
 
-#include "solvers/EulerianSolver.h"
 #include "solvers/ForwardEulerianSolver.h"
 #include "solvers/MidPointSolver.h"
 #include "solvers/Runge4Solver.h"
-
 #include "SceneBuilder.h"
 
 
@@ -198,6 +194,26 @@ static void key_func(unsigned char key, int x, int y) {
             free_data();
             exit(0);
 
+        case 'w':
+        case 'W':
+            if (!dsim) {
+                dt = 1.5f * dt;
+                printf("Increased dt: %f\n", dt);
+            } else {
+                printf("Can only edit dt when simulation is not running!\n");
+            }
+            break;
+
+        case 's':
+        case 'S':
+            if (!dsim) {
+                dt = (2.0f/3.0f) * dt;
+                printf("Increased dt: %f\n", dt);
+            } else {
+                printf("Can only edit dt when simulation is not running!\n");
+            }
+            break;
+
         case ' ':
             dsim = !dsim;
             break;
@@ -374,12 +390,12 @@ void processSolverMenuEvents(int option) {
             break;
         case 1:
             printf("Mid-Point solver selected\n");
-            //solver = new MidPointSolver();
+            solver = new MidPointSolver();
             break;
         case 2:
         default:
             printf("Runge-Kutta 4th order solver selected\n");
-            //solver = new Runge4Solver();
+            solver = new Runge4Solver();
     }
 }
 
@@ -460,7 +476,9 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.01f;
+
+        dt = 0.02f;
+
         d = 5.f;
     } else {
         N = atoi(argv[1]);
@@ -470,7 +488,9 @@ int main(int argc, char **argv) {
 
     printf("\n\nHow to use this application:\n\n");
     printf("\t Toggle construction/simulation display with the spacebar key\n");
-    printf("\t Dump frames by pressing the 'd' key\n");
+    printf("\t Increase time step with the 'w' key\n");
+    printf("\t Decrease time step with the 's' key\n");
+    printf("\t Press the middle mouse button for solver and scene menus\n");
     printf("\t Quit by pressing the 'q' key\n");
 
     dsim = 0;
