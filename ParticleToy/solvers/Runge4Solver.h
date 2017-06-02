@@ -8,7 +8,6 @@ class Runge4Solver : public Solver {
 public:
     Runge4Solver();
     void simulation_step(ParticleSystem* p, float dt) override;
-    void simulation_step2(ParticleSystem* p, float dt);
 };
 
 

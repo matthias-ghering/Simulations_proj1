@@ -1,7 +1,7 @@
 #include "LineConstraint.h"
 #include <GL/glut.h>
 
-LineConstraint::LineConstraint(Particle *p1, double fixed_y) : m_y(fixed_y) {
+LineConstraint::LineConstraint(Particle *p1, float fixed_y) : m_y(fixed_y) {
     this->particles.push_back(p1);
 }
 

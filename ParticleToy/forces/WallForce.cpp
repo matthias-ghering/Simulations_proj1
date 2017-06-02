@@ -1,6 +1,6 @@
 #include "WallForce.h"
 
-WallForce::WallForce(Particle *p1, double fixed_x) :
+WallForce::WallForce(Particle *p1, float fixed_x) :
         m_p1(p1), m_x(fixed_x) {}
 
 void WallForce::draw() {

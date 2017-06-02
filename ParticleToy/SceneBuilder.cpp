@@ -38,8 +38,8 @@ ParticleSystem* createCurtainScene(){
 
     int x_=5;
     int y_=9;
-    const Vec2f lower_left_corner(0.0, -0.8);
-    const double dist = 0.2;
+    const Vec2f lower_left_corner(0.0, -0.8f);
+    const float dist = 0.2;
     //spring variables
     const double ks_near = 10;
     const double kd_near = 1;
@@ -92,8 +92,8 @@ ParticleSystem* createSimpleClothScene(){
 
     int x_=5;
     int y_=9;
-    const Vec2f lower_left_corner(-0.4, -0.8);
-    const double dist = 0.2;
+    const Vec2f lower_left_corner(-0.4f, -0.8f);
+    const float dist = 0.2;
     //spring variables
     const double ks_near = 5;
     const double kd_near = 1;
@@ -208,9 +208,9 @@ ParticleSystem* createSimpleAngularSprings() {
         if (i > 2) {
             signX = 1;
         }
-        particleSystem->particles.push_back(new Particle(Vec2f(0.5 * signX, 0.6 * signY)));
-        particleSystem->particles.push_back(new Particle(Vec2f(0.5 * signX, 0.5 * signY)));
-        particleSystem->particles.push_back(new Particle(Vec2f(0.6 * signX, 0.5 * signY)));
+        particleSystem->particles.push_back(new Particle(Vec2f(0.5f * signX, 0.6f * signY)));
+        particleSystem->particles.push_back(new Particle(Vec2f(0.5f * signX, 0.5f * signY)));
+        particleSystem->particles.push_back(new Particle(Vec2f(0.6f * signX, 0.5f * signY)));
         particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i * 3]));
         particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i * 3 + 1]));
         particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i * 3 + 2]));
@@ -226,8 +226,8 @@ ParticleSystem* createCurtain2Scene() {
 
     int x_ = 9;
     int y_ = 9;
-    Vec2f lower_left_corner(-0.8, -0.0);
-    const double dist = 0.1;
+    Vec2f lower_left_corner(-0.8f, -0.0f);
+    const float dist = 0.1;
     //spring variables
     const double ks_near = 20;
     const double kd_near = 3.0;
@@ -241,7 +241,7 @@ ParticleSystem* createCurtain2Scene() {
     for(int k =0;k<2;k++) {
         //if-clause to correct indexes for second cloth
         if(k==1){
-            lower_left_corner = Vec2f(0.0, -0.0);
+            lower_left_corner = Vec2f(0.0, -0.0f);
             filler=k*y_*x_;
         }
 

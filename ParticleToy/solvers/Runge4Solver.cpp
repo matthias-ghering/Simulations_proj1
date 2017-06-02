@@ -3,9 +3,6 @@
 Runge4Solver::Runge4Solver():Solver(){}
 
 void Runge4Solver::simulation_step(ParticleSystem* p, float dt) {
-    std::vector<Particle* > pVector = p->particles;
-    std::vector<Force* > fVector = p->forces;
-    std::vector<Constraint* > cVector = p->constraints;
 
     unsigned dim = (this->getDim(p));
     std::vector<float> initpVector(dim), tmpfVector(dim),k1(dim), k2(dim), k3(dim), k4(dim), test(dim), midPt(dim);

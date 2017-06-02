@@ -1,7 +1,6 @@
 #include "AngularSpringForce.h"
-#include <cmath>
-#include <math.h>
-AngularSpringForce::AngularSpringForce(Particle *p1, Particle *p2, Particle *p3, double dist, double rstAngle,double ks,  double kd) :
+
+AngularSpringForce::AngularSpringForce(Particle *p1, Particle *p2, Particle *p3, double dist, float rstAngle,double ks,  double kd) :
         m_p1(p1), m_p2(p2), m_p3(p3), m_dist(dist), m_rstAngle(rstAngle), m_ks(ks), m_kd(kd) {
     //The orientation of the original angle is based on if p3 is on the right had side of p1.
     Vec2f arm12 = (m_p1->m_Position - m_p2->m_Position);
@@ -22,12 +21,12 @@ void AngularSpringForce::draw() {
 }
 
 static float lenVec(Vec2f v){
-    return sqrt(v * v);
+    return (float) sqrt(v * v);
 }
 
 void AngularSpringForce::calc_Force() {
 
-    float cosRstA = cosf(M_PI*m_rstAngle/180.0);
+    float cosRstA = cosf((float) M_PI*m_rstAngle/180.0f);
     Vec2f arm12 = m_p1->m_Position - m_p2->m_Position;
     Vec2f arm23 = m_p3->m_Position - m_p2->m_Position;
     float lenArm12 = lenVec(arm12);

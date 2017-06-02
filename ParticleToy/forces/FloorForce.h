@@ -5,12 +5,12 @@
 
 class FloorForce : public Force{
 public:
-    FloorForce(Particle *p1, double fixed_y);
+    FloorForce(Particle *p1, float fixed_y);
     void calc_Force() override;
     void draw() override;
 
 private:
 
     Particle *const m_p1;   // particle 1
-    double const m_y;
+    float const m_y;
 };

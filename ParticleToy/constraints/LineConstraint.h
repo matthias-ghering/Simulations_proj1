@@ -6,7 +6,7 @@
 class LineConstraint : public Constraint{
 
 public:
-    LineConstraint(Particle *p1, double fixed_y);
+    LineConstraint(Particle *p1, float fixed_y);
     double getC() override ;
     double getCdot() override ;
     std::vector<Vec2f> getJ() override ;
@@ -14,5 +14,5 @@ public:
     void draw() override;
 
 private:
-    double const m_y;
+    float const m_y;
 };

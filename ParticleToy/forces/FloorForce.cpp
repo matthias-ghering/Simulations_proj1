@@ -1,6 +1,6 @@
 #include "FloorForce.h"
 
-FloorForce::FloorForce(Particle *p1, double fixed_y) :
+FloorForce::FloorForce(Particle *p1, float fixed_y) :
         m_p1(p1), m_y(fixed_y) {}
 
 void FloorForce::draw() {

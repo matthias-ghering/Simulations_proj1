@@ -7,7 +7,7 @@ void StaticForce::draw() {
     glBegin(GL_LINES);
     glColor3f(0.0, 0.0, 0.8);
     glVertex2f(m_p1->m_Position[0], m_p1->m_Position[1]);
-    glVertex2f(m_p1->m_Position[0]+ m_s[0]*2.0, m_p1->m_Position[1]+m_s[1]*2.0);
+    glVertex2f(m_p1->m_Position[0]+ m_s[0]*2.0f, m_p1->m_Position[1]+m_s[1]*2.0f);
     glEnd();
 }
 
