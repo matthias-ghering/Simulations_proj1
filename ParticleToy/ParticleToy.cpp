@@ -1,11 +1,18 @@
 // ParticleToy.cpp : Defines the entry point for the console application.
 //
 
+#include "forces/SpringForce.h"
+#include "constraints/RodConstraint.h"
+
+#include "forces/GravityForce.h"
+#include "forces/AngularSpringForce.h"
+#include "forces/DampeningForce.h"
 
 #include "solvers/ForwardEulerianSolver.h"
 #include "solvers/MidPointSolver.h"
 #include "solvers/Runge4Solver.h"
 #include "SceneBuilder.h"
+
 
 #include <GL/glut.h>
 
@@ -56,10 +63,12 @@ static void clear_data(void) {
 }
 
 
+
 static void init_system(void) {
 
     particleSystem = new ParticleSystem();
     solver = new ForwardEulerianSolver();
+
 
 }
 
@@ -139,7 +148,6 @@ static void get_from_UI() {
     if (i < 1 || i > N || j < 1 || j > N) return;
 
     if (mouse_down[0]) {
-
     }
 
     if (mouse_down[2]) {
@@ -246,7 +254,6 @@ static Particle* closestParticle(Particle* particle){
             }
         }
     }
-
     return closest;
 }
 
@@ -354,6 +361,17 @@ void processSceneMenuEvents(int option) {
             printf("Created Curtain scene\n");
             break;
         case 2:
+            printf("Created circular wire scene\n");
+            particleSystem = createCircularWireScene();
+            break;
+        case 3:
+            printf("Created create simple angular spring\n");
+            particleSystem = createSimpleAngularSprings();
+            break;
+        case 4:
+            printf("Created create angular springs hair\n");
+            particleSystem = createHairAngularSprings();
+            break;
         default:
             printf("Created circular wire scene\n");
             particleSystem = createCircularWireScene();
@@ -387,6 +405,8 @@ static void createMenu() {
     glutAddMenuEntry("Empty scene", 0);
     glutAddMenuEntry("Curtain", 1);
     glutAddMenuEntry("Circular wire", 2);
+    glutAddMenuEntry("Simple AngularSprings", 3);
+    glutAddMenuEntry("AngularSprings", 4);
 
 
 
@@ -456,7 +476,9 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.05f;
+
+        dt = 0.02f;
+
         d = 5.f;
     } else {
         N = atoi(argv[1]);

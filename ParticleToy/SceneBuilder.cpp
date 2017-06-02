@@ -3,6 +3,7 @@
 //
 
 #include "SceneBuilder.h"
+#include "forces/AngularSpringForce.h"
 
 ParticleSystem* createEmptyScene() {
     return new ParticleSystem();
@@ -90,4 +91,73 @@ ParticleSystem* createCurtainScene(){
 
     return particleSystem;
 
+}
+
+ParticleSystem* createHairAngularSprings() {
+    ParticleSystem* particleSystem = new ParticleSystem();
+    int curls = 5;
+    float curlYLength = 0.15;
+    float curlXLength = 0.1;
+    float curlRestDist = 0.15;
+    float curlAngle = 70;
+
+
+    for(int i = 0; i < curls; i++){
+        float offset = 0.0;
+        if(i%2 ==1){
+            offset = curlXLength;
+        }
+        particleSystem->particles.push_back(new Particle(Vec2f(0.2f+offset,0.0f-curlYLength*i)));
+        particleSystem->particles.push_back(new Particle(Vec2f(-0.2f-offset,0.0f-curlYLength*i)));
+    }
+
+
+    for(int i = 0; i < curls-2; i++){
+        particleSystem->forces.push_back(new AngularSpringForce(particleSystem->particles[i*2]
+                ,particleSystem->particles[i*2+2],particleSystem->particles[i*2+4],curlRestDist,curlAngle, 0.001, 0.1));
+        particleSystem->forces.push_back(new AngularSpringForce(particleSystem->particles[i*2+1]
+                ,particleSystem->particles[i*2+3],particleSystem->particles[i*2+5],curlRestDist,curlAngle, 0.001, 0.1));
+        particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i]));
+        particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i+1]));
+    }
+
+    if(curls>1) {
+        particleSystem->constraints.push_back(
+                new CircularWireConstraint(particleSystem->particles[0], Vec2f(0, 0), 0.2));
+        particleSystem->constraints.push_back(
+                new CircularWireConstraint(particleSystem->particles[0], Vec2f(0, 0), 0.2));
+    }
+    return particleSystem;
+}
+
+ParticleSystem* createSimpleAngularSprings() {
+    ParticleSystem* particleSystem = new ParticleSystem();
+    float curlRestDist = 0.2;
+    float curlAngle = 130;
+    float signY =1;
+    float signX =1;
+    for(int i=0; i < 4; i++){
+        if(i > 0){
+            signX = -1;
+        }
+        if(i > 1){
+            signY = -1;
+        }
+        if(i > 2){
+            signX = 1;
+        }
+        particleSystem->particles.push_back(new Particle(Vec2f(0.5*signX,0.6*signY)));
+        particleSystem->particles.push_back(new Particle(Vec2f(0.5*signX,0.5*signY)));
+        particleSystem->particles.push_back(new Particle(Vec2f(0.6*signX,0.5*signY)));
+        particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i*3]));
+        particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i*3+1]));
+        particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[i*3+2]));
+        particleSystem->forces.push_back(new AngularSpringForce(particleSystem->particles[i*3]
+                ,particleSystem->particles[i*3+1],particleSystem->particles[i*3+2],curlRestDist,curlAngle, 0.1, 0.005));
+    }
+
+
+
+
+    return particleSystem;
 }

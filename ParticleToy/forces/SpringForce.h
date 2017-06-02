@@ -3,7 +3,7 @@
 #include "../Particle.h"
 #include "Force.h"
 
-class SpringForce : public Force{ //
+class SpringForce : public Force{
 public:
     SpringForce(Particle *p1, Particle *p2, double dist, double ks, double kd);
     void calc_Force() override;

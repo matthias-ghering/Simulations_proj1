@@ -21,5 +21,7 @@
 ParticleSystem* createEmptyScene();
 ParticleSystem* createCircularWireScene();
 ParticleSystem* createCurtainScene();
+ParticleSystem* createHairAngularSprings();
+ParticleSystem* createSimpleAngularSprings();
 
 #endif //SIMULATION_1_SCENEBUILDER_H

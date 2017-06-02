@@ -34,6 +34,8 @@ set(SOURCE_FILES
         ParticleToy/solvers/MidPointSolver.cpp
         ParticleToy/solvers/MidPointSolver.h
         ParticleToy/forces/Force.h
+        ParticleToy/forces/AngularSpringForce.cpp
+        ParticleToy/forces/AngularSpringForce.h
         ParticleToy/forces/SpringForce.cpp
         ParticleToy/forces/SpringForce.h
         ParticleToy/forces/GravityForce.cpp
