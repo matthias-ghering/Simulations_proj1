@@ -8,7 +8,11 @@ Solver::Solver() {
 unsigned int Solver::getDim(ParticleSystem* p) {
     return p->particles.size() * 4;
 }
-
+/**
+ * Returns the current state of the system (positions and velocities).
+ * @param p the given ParticleSystem.
+ * @param dst a vector of positions and velocities.
+ */
 void Solver::getState(ParticleSystem* p, std::vector<float>& dst) {
     for (int i = 0; i < p->particles.size(); i++) {
         dst[4 * i + 0] = p->particles[i]->m_Position[0];
@@ -26,7 +30,11 @@ void Solver::setState(ParticleSystem* p, std::vector<float>& src) {
         p->particles[i]->m_Velocity[1] = src[4 * i + 3];
     }
 }
-
+/**
+ * derivEval uses the forces and the constraints to compute the accelloration which is returned together with the velocity.
+ * @param p the given ParticleSystem.
+ * @param dst a vector of velocities and accelerations.
+ */
 void Solver::derivEval(ParticleSystem* p, std::vector<float>& dst) {
     this->clearForces(p);
     this->computeForces(p);
@@ -61,7 +69,12 @@ void Solver::scaleVector(std::vector<float>& a, float dt) {
         a[i] *= dt;
     }
 }
-
+/**
+ * addVectors adds two vectors.
+ * @param src1
+ * @param src2
+ * @param dst this vector is the result of the addition.
+ */
 void Solver::addVectors(std::vector<float>& src1, std::vector<float>& src2, std::vector<float>& dst) {
     for (int i = 0; i < src1.size(); i++) {
         dst[i] = src1[i] + src2[i];
