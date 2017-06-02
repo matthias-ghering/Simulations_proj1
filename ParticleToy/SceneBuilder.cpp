@@ -43,8 +43,8 @@ ParticleSystem* createCurtainScene(){
     //spring variables
     const double ks_near = 10;
     const double kd_near = 1;
-    const double ks_cross = 0.5;
-    const double kd_cross = 0.05;
+    const double ks_cross = 1;
+    const double kd_cross = 0.1;
 
     ParticleSystem* particleSystem = new ParticleSystem();
 
@@ -81,9 +81,62 @@ ParticleSystem* createCurtainScene(){
         }
     }
 
-    particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[8], 0.8));
-    particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[5*9-1], 0.8));
-    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[8],Vec2f(-0.05f,0)));
+    particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[y_-1], 0.8));
+    particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[x_*y_-1], 0.8));
+    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[y_-1],Vec2f(-0.05f,0)));
+    return particleSystem;
+
+}
+
+ParticleSystem* createSimpleClothScene(){
+
+    int x_=5;
+    int y_=9;
+    const Vec2f lower_left_corner(-0.4, -0.8);
+    const double dist = 0.2;
+    //spring variables
+    const double ks_near = 5;
+    const double kd_near = 1;
+    const double ks_cross = 2;
+    const double kd_cross = 1;
+
+    ParticleSystem* particleSystem = new ParticleSystem();
+
+    //cloth uses center as lower left corner
+    for (int i = 0; i < x_; i++) {
+        for (int j = 0; j < y_; j++) {
+            //add particle
+            particleSystem->particles.push_back(new Particle(lower_left_corner + Vec2f(dist*i,dist*j)));
+            //add gravity
+            particleSystem->forces.push_back(new GravityForce(particleSystem->particles[j+i*y_]));
+            //particleSystem->forces.push_back(new WallForce(particleSystem->particles[j+i*y_], -0.5));
+        }
+    }
+
+    //add vertical structural springs
+    for (int i = 0; i < x_; i++) {
+        for (int j = 0; j < y_-1; j++) {
+            particleSystem->forces.push_back(new SpringForce(particleSystem->particles[j+i*y_],particleSystem->particles[(j+i*y_)+1], dist , ks_near, kd_near));
+        }
+    }
+
+    //add horizontal structural springs
+    for (int i = 0; i < x_-1; i++) {
+        for (int j = 0; j < y_; j++) {
+            particleSystem->forces.push_back(new SpringForce(particleSystem->particles[j+i*y_],particleSystem->particles[(j+i*y_)+y_], dist , ks_near, kd_near));
+        }
+    }
+
+    //add shear springs
+    for (int i = 0; i < x_-1; i++) {
+        for (int j = 0; j < y_-1; j++) {
+            particleSystem->forces.push_back(new SpringForce(particleSystem->particles[j+i*y_],particleSystem->particles[(j+i*y_)+y_+1], sqrt(pow(dist,2)*2) , ks_cross, kd_cross));
+            particleSystem->forces.push_back(new SpringForce(particleSystem->particles[j+i*y_+1],particleSystem->particles[(j+i*y_)+y_], sqrt(pow(dist,2)*2) , ks_cross, kd_cross));
+        }
+    }
+    for(int p=0 ; p<x_;p++){
+        particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[(y_-1)+y_*p], 0.8));
+    }
 
     return particleSystem;
 
@@ -178,4 +231,84 @@ ParticleSystem* createSimpleAngularSprings() {
 
 
     return particleSystem;
+}
+
+ParticleSystem* createCurtain2Scene() {
+
+    int x_ = 9;
+    int y_ = 9;
+    Vec2f lower_left_corner(-0.8, -0.0);
+    const double dist = 0.1;
+    //spring variables
+    const double ks_near = 20;
+    const double kd_near = 3.0;
+    const double ks_cross = 0.1;
+    const double kd_cross = 0.01;
+    double filler =0;
+
+    ParticleSystem *particleSystem = new ParticleSystem();
+
+    //In curtain scene we loop curtain making loop two times to get two curtains
+    for(int k =0;k<2;k++) {
+        //if-clause to correct indexes for second cloth
+        if(k==1){
+            lower_left_corner = Vec2f(0.0, -0.0);
+            filler=k*y_*x_;
+        }
+
+        //cloth uses center as lower left corner
+        for (int i = 0; i < x_; i++) {
+            for (int j = 0; j < y_; j++) {
+                //add particle
+                particleSystem->particles.push_back(new Particle(lower_left_corner + Vec2f(dist * i, dist * j)));
+                //add gravity
+                particleSystem->forces.push_back(new GravityForce(particleSystem->particles[filler+j + i * y_]));
+
+            }
+        }
+
+        //add vertical structural springs
+        for (int i = 0; i < x_; i++) {
+            for (int j = 0; j < y_ - 1; j++) {
+                particleSystem->forces.push_back(
+                        new SpringForce(particleSystem->particles[filler+(j + i * y_)],
+                                        particleSystem->particles[filler+(j + i * y_) + 1],
+                                        dist, ks_near, kd_near));
+            }
+        }
+
+        //add horizontal structural springs
+        for (int i = 0; i < x_ - 1; i++) {
+            for (int j = 0; j < y_; j++) {
+                particleSystem->forces.push_back(
+                        new SpringForce(particleSystem->particles[filler+j + i * y_],
+                                        particleSystem->particles[filler+(j + i * y_) + y_],
+                                        dist, ks_near, kd_near));
+            }
+        }
+
+        //add shear springs
+        for (int i = 0; i < x_ - 1; i++) {
+            for (int j = 0; j < y_ - 1; j++) {
+                particleSystem->forces.push_back(new SpringForce(particleSystem->particles[filler+j + i * y_],
+                                                                 particleSystem->particles[filler+(j + i * y_) + y_ + 1],
+                                                                 sqrt(pow(dist, 2) * 2), ks_cross, kd_cross));
+                particleSystem->forces.push_back(new SpringForce(particleSystem->particles[filler+j + i * y_ + 1],
+                                                                 particleSystem->particles[filler+(j + i * y_) + y_],
+                                                                 sqrt(pow(dist, 2) * 2), ks_cross, kd_cross));
+            }
+        }
+
+    }
+
+    for(int p=0 ; p<x_;p++){
+        particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[(y_-1)+y_*p], 0.8));
+        particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[filler+(y_-1)+y_*p], 0.8));
+    }
+    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[y_-1], Vec2f(-0.2f, 0)));
+    particleSystem->forces.push_back(new StaticForce(particleSystem->particles.back(), Vec2f(0.2f, 0)));
+
+
+    return particleSystem;
+
 }

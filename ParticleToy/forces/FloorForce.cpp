@@ -11,6 +11,7 @@ void FloorForce::draw() {
     glEnd();
 }
 
+//Implement horizontal one-way wall by switching direction of force and velocity to positive while under the wall
 void FloorForce::calc_Force() {
     if (m_p1->m_Position[1] < m_y){
         if (m_p1->m_Force[1]<0){m_p1->m_Force[1]*= -.5;}
