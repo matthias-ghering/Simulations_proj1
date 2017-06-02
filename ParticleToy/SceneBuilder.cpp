@@ -42,9 +42,9 @@ ParticleSystem* createCurtainScene(){
     const float dist = 0.2;
     //spring variables
     const double ks_near = 10;
-    const double kd_near = 1;
-    const double ks_cross = 1;
-    const double kd_cross = 0.1;
+    const double kd_near = 3;
+    const double ks_cross = 5;
+    const double kd_cross = 1;
 
     ParticleSystem* particleSystem = new ParticleSystem();
 
@@ -56,6 +56,8 @@ ParticleSystem* createCurtainScene(){
             //add gravity
             particleSystem->forces.push_back(new GravityForce(particleSystem->particles[j+i*y_]));
             particleSystem->forces.push_back(new WallForce(particleSystem->particles[j+i*y_], -0.5));
+            //add drag
+            particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[j+i*y_]));
         }
     }
 
@@ -83,7 +85,7 @@ ParticleSystem* createCurtainScene(){
 
     particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[y_-1], 0.8));
     particleSystem->constraints.push_back(new LineConstraint(particleSystem->particles[x_*y_-1], 0.8));
-    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[y_-1],Vec2f(-0.05f,0)));
+    particleSystem->forces.push_back(new StaticForce(particleSystem->particles[y_-1],Vec2f(-0.5f,0)));
     return particleSystem;
 
 }
@@ -109,6 +111,8 @@ ParticleSystem* createSimpleClothScene(){
             particleSystem->particles.push_back(new Particle(lower_left_corner + Vec2f(dist*i,dist*j)));
             //add gravity
             particleSystem->forces.push_back(new GravityForce(particleSystem->particles[j+i*y_]));
+            //add drag
+            particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[j+i*y_]));
         }
     }
 
@@ -252,6 +256,8 @@ ParticleSystem* createCurtain2Scene() {
                 particleSystem->particles.push_back(new Particle(lower_left_corner + Vec2f(dist * i, dist * j)));
                 //add gravity
                 particleSystem->forces.push_back(new GravityForce(particleSystem->particles[filler+j + i * y_]));
+                //add drag
+                particleSystem->forces.push_back(new DampeningForce(particleSystem->particles[filler+j+i*y_]));
 
             }
         }
