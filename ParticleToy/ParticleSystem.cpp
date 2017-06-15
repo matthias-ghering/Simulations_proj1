@@ -2,6 +2,7 @@
 
 ParticleSystem::ParticleSystem() {
     this->time = 0;
+    Eigen::Vector3f b(1.0f,1.0f,1.0f);
 }
 
 void ParticleSystem::drawParticles() {
