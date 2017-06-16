@@ -17,10 +17,6 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}
 
 
 set(SOURCE_FILES
-        ParticleToy/constraints/RodConstraint.cpp
-        ParticleToy/constraints/RodConstraint.h
-        ParticleToy/constraints/CircularWireConstraint.cpp
-        ParticleToy/constraints/CircularWireConstraint.h
         ParticleToy/solvers/linearSolver.cpp
         ParticleToy/solvers/linearSolver.h
         ParticleToy/Particle.cpp
@@ -34,8 +30,6 @@ set(SOURCE_FILES
         ParticleToy/solvers/MidPointSolver.cpp
         ParticleToy/solvers/MidPointSolver.h
         ParticleToy/forces/Force.h
-        ParticleToy/forces/AngularSpringForce.cpp
-        ParticleToy/forces/AngularSpringForce.h
         ParticleToy/forces/SpringForce.cpp
         ParticleToy/forces/SpringForce.h
         ParticleToy/forces/GravityForce.cpp
@@ -50,11 +44,6 @@ set(SOURCE_FILES
         ParticleToy/forces/FloorForce.h
         ParticleToy/SparseMatrix.cpp
         ParticleToy/SparseMatrix.h
-        ParticleToy/constraints/Constraint.h
-        ParticleToy/constraints/ConstraintSolver.h
-        ParticleToy/constraints/ConstraintSolver.cpp
-        ParticleToy/constraints/LineConstraint.cpp
-        ParticleToy/constraints/LineConstraint.h
         ParticleToy/ParticleSystem.cpp
         ParticleToy/ParticleSystem.h
         ParticleToy/SceneBuilder.cpp

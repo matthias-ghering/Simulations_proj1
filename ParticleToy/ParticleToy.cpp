@@ -2,7 +2,6 @@
 //
 
 #include "forces/SpringForce.h"
-#include "constraints/RodConstraint.h"
 
 #include "forces/DampeningForce.h"
 
@@ -78,9 +77,21 @@ static void pre_display(void) {
     glViewport(0, 0, win_x, win_y);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(-1.0, 1.0, -1.0, 1.0);
+    gluPerspective(45.0f, win_x/win_y, 0.1f, 100.0f);
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClearDepth(1.0f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+
+    glLoadIdentity();
+    glTranslatef(1.5f, 0.0f, -7.0f);
+
+
 }
 
 static void post_display(void) {
@@ -109,17 +120,16 @@ static void post_display(void) {
 }
 
 static void draw_particles(void) {
+
     particleSystem->drawParticles();
 
 }
 
 static void draw_forces(void) {
+
     particleSystem->drawForces();
 }
 
-static void draw_constraints(void) {
-    particleSystem->drawConstraints();
-}
 
 /*
 ----------------------------------------------------------------------
@@ -191,7 +201,7 @@ static void key_func(unsigned char key, int x, int y) {
         case 'w':
         case 'W':
             if (!dsim) {
-                dt = 1.5f * dt;
+                dt = 0.01f + dt;
                 printf("Increased dt: %f\n", dt);
             } else {
                 printf("Can only edit dt when simulation is not running!\n");
@@ -201,7 +211,7 @@ static void key_func(unsigned char key, int x, int y) {
         case 's':
         case 'S':
             if (!dsim) {
-                dt = (2.0f/3.0f) * dt;
+                dt = -0.01 + dt;
                 printf("Increased dt: %f\n", dt);
             } else {
                 printf("Can only edit dt when simulation is not running!\n");
@@ -223,7 +233,7 @@ static void key_func(unsigned char key, int x, int y) {
  * @return the squared distance between two particles.
  */
 static float distanceSq(Particle* p1, Particle* p2){
-    Vec2f distVec = p1->m_Position - p2->m_Position;
+    Vec3f distVec = p1->m_Position - p2->m_Position;
     return distVec * distVec;
 }
 /**
@@ -276,7 +286,7 @@ static void mouse_func(int button, int state, int x, int y) {
         float loc_x = (float) ((float) mx / (float) win_x * 2.0 - 1.0);
         float loc_y = 0 - (float) ((float) my / (float) win_y * 2.0 - 1.0);
 
-        Vec2f place(loc_x, loc_y);
+        Vec3f place(loc_x, loc_y,0);
         Particle *mousePoint = new Particle(place);
         Particle *closestPart = closestParticle(mousePoint);
 
@@ -314,7 +324,7 @@ static void idle_func(void) {
         if (mouse_down[0]) {
             float loc_x = (float) ((float) mx / (float) win_x * 2.0 - 1.0);
             float loc_y = 0 - (float) ((float) my / (float) win_y * 2.0 - 1.0);
-            particleSystem->particles.back()->m_Position = Vec2f(loc_x, loc_y);
+            particleSystem->particles.back()->m_Position = Vec3f(loc_x, loc_y,0);
         }
     } else {
         get_from_UI();
@@ -329,7 +339,7 @@ static void display_func(void) {
     pre_display();
 
 
-    draw_constraints();
+
     draw_forces();
     draw_particles();
 
@@ -352,29 +362,13 @@ void processSceneMenuEvents(int option) {
             printf("Created empty scene\n");
             break;
         case 1:
-            particleSystem = createCurtainScene();
-            printf("Created Curtain scene\n");
-            break;
-        case 2:
-            printf("Created create simple angular spring\n");
-            particleSystem = createSimpleAngularSprings();
-            break;
-        case 3:
-            printf("Created create angular springs hair\n");
-            particleSystem = createHairAngularSprings();
-            break;
-        case 4:
-            particleSystem = createCurtain2Scene();
-            printf("Created Curtain2 scene\n");
-            break;
-        case 5:
             particleSystem = createSimpleClothScene();
             printf("Created SimpleCloth scene\n");
             break;
-        case 6:
+        case 2:
         default:
             printf("Created circular wire scene\n");
-            particleSystem = createCircularWireScene();
+            particleSystem = createBoxScene();
             break;
     }
 }
@@ -403,12 +397,8 @@ void processSolverMenuEvents(int option) {
 static void createMenu() {
     sceneMenu = glutCreateMenu(processSceneMenuEvents);
     glutAddMenuEntry("Empty scene", 0);
-    glutAddMenuEntry("Curtain", 1);
-    glutAddMenuEntry("Simple AngularSprings", 2);
-    glutAddMenuEntry("AngularSprings", 3);
-    glutAddMenuEntry("Curtain2", 4);
-    glutAddMenuEntry("SimpleCloth", 5);
-    glutAddMenuEntry("Circular Wire", 6);
+    glutAddMenuEntry("SimpleCloth", 1);
+    glutAddMenuEntry("Box", 2);
 
 
 

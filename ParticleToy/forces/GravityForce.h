@@ -13,7 +13,7 @@ public:
 
 private:
     Particle *m_p1;   // particle 1
-    Vec2f gravitationalForce;
+    Vec3f gravitationalForce;
 };
 
 

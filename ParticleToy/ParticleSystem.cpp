@@ -19,11 +19,3 @@ void ParticleSystem::drawForces() {
         this->forces[i]->draw();
     }
 }
-
-void ParticleSystem::drawConstraints() {
-    int size = this->constraints.size();
-
-    for (int i = 0; i < size; i++) {
-        this->constraints[i]->draw();
-    }
-}

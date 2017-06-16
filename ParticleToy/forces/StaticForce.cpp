@@ -1,13 +1,13 @@
 #include "StaticForce.h"
 
-StaticForce::StaticForce(Particle *p1, Vec2f sForce) :
+StaticForce::StaticForce(Particle *p1, Vec3f sForce) :
         m_p1(p1), m_s(sForce) {}
 
 void StaticForce::draw() {
     glBegin(GL_LINES);
     glColor3f(0.0, 0.0, 0.8);
-    glVertex2f(m_p1->m_Position[0], m_p1->m_Position[1]);
-    glVertex2f(m_p1->m_Position[0]+ m_s[0]*2.0f, m_p1->m_Position[1]+m_s[1]*2.0f);
+    glVertex3f(m_p1->m_Position[0], m_p1->m_Position[1], m_p1->m_Position[2]);
+    glVertex3f(m_p1->m_Position[0]+ m_s[0]*2.0f, m_p1->m_Position[1]+m_s[1]*2.0f, m_p1->m_Position[2]+m_s[2]*2.0f);
     glEnd();
 }
 

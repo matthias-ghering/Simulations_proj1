@@ -2,7 +2,7 @@
 #include "Solver.h"
 
 Solver::Solver() {
-    this->constraintSolver = new ConstraintSolver();
+
 }
 
 unsigned int Solver::getDim(ParticleSystem* p) {
@@ -15,19 +15,23 @@ unsigned int Solver::getDim(ParticleSystem* p) {
  */
 void Solver::getState(ParticleSystem* p, std::vector<float>& dst) {
     for (int i = 0; i < p->particles.size(); i++) {
-        dst[4 * i + 0] = p->particles[i]->m_Position[0];
-        dst[4 * i + 1] = p->particles[i]->m_Position[1];
-        dst[4 * i + 2] = p->particles[i]->m_Velocity[0];
-        dst[4 * i + 3] = p->particles[i]->m_Velocity[1];
+        dst[6 * i + 0] = p->particles[i]->m_Position[0];
+        dst[6 * i + 1] = p->particles[i]->m_Position[1];
+        dst[6 * i + 2] = p->particles[i]->m_Position[2];
+        dst[6 * i + 3] = p->particles[i]->m_Velocity[0];
+        dst[6 * i + 4] = p->particles[i]->m_Velocity[1];
+        dst[6 * i + 5] = p->particles[i]->m_Velocity[2];
     }
 }
 
 void Solver::setState(ParticleSystem* p, std::vector<float>& src) {
     for (int i = 0; i < p->particles.size(); i++) {
-        p->particles[i]->m_Position[0] = src[4 * i + 0];
-        p->particles[i]->m_Position[1] = src[4 * i + 1];
-        p->particles[i]->m_Velocity[0] = src[4 * i + 2];
-        p->particles[i]->m_Velocity[1] = src[4 * i + 3];
+        p->particles[i]->m_Position[0] = src[6 * i + 0];
+        p->particles[i]->m_Position[1] = src[6 * i + 1];
+        p->particles[i]->m_Position[2] = src[6 * i + 2];
+        p->particles[i]->m_Velocity[0] = src[6 * i + 3];
+        p->particles[i]->m_Velocity[1] = src[6 * i + 4];
+        p->particles[i]->m_Velocity[2] = src[6 * i + 5];
     }
 }
 /**
@@ -40,19 +44,21 @@ void Solver::derivEval(ParticleSystem* p, std::vector<float>& dst) {
     this->computeForces(p);
 
     for (int i = 0; i < p->particles.size(); i++) {
-        dst[4 * i + 0] = p->particles[i]->m_Velocity[0];
-        dst[4 * i + 1] = p->particles[i]->m_Velocity[1];
+        dst[6 * i + 0] = p->particles[i]->m_Velocity[0];
+        dst[6 * i + 1] = p->particles[i]->m_Velocity[1];
+        dst[6 * i + 2] = p->particles[i]->m_Velocity[2];
 
         float mass = p->particles[i]->m_Mass;
 
-        dst[4 * i + 2] = p->particles[i]->m_Force[0]/mass;
-        dst[4 * i + 3] = p->particles[i]->m_Force[1]/mass;
+        dst[6 * i + 3] = p->particles[i]->m_Force[0]/mass;
+        dst[6 * i + 4] = p->particles[i]->m_Force[1]/mass;
+        dst[6 * i + 5] = p->particles[i]->m_Force[2]/mass;
     }
 }
 
 void Solver::clearForces(ParticleSystem* p) {
     for (int i = 0; i < p->particles.size(); i++) {
-        p->particles[i]->m_Force = Vec2f(0.0f, 0.0f);
+        p->particles[i]->m_Force = Vec3f(0.0f, 0.0f, 0.0f);
     }
 }
 
@@ -60,8 +66,6 @@ void Solver::computeForces(ParticleSystem* p) {
     for (int i = 0; i < p->forces.size(); i++) {
         p->forces[i]->calc_Force();
     }
-
-    this->constraintSolver->applyConstraints(p->particles, p->constraints, 0.97f, 0.98f);
 }
 
 void Solver::scaleVector(std::vector<float>& a, float dt) {
@@ -81,6 +85,8 @@ void Solver::scaleVector(std::vector<float>& a, float dt, std::vector<float>& ds
  * @param src2
  * @param dst this vector is the result of the addition.
  */
+
+//TODO: check if this is problem
 void Solver::addVectors(std::vector<float>& src1, std::vector<float>& src2, std::vector<float>& dst) {
     for (int i = 0; i < src1.size(); i++) {
         dst[i] = src1[i] + src2[i];

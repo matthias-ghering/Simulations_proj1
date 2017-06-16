@@ -6,8 +6,8 @@ FloorForce::FloorForce(Particle *p1, float fixed_y) :
 void FloorForce::draw() {
     glBegin(GL_LINES);
     glColor3f(0.8, 0.0, 0.0);
-    glVertex2f(-10, this->m_y);
-    glVertex2f(10, this->m_y);
+    glVertex3f(-10, this->m_y, -10);
+    glVertex3f(10, this->m_y, 10);
     glEnd();
 }
 

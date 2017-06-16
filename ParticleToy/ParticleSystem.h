@@ -4,7 +4,7 @@
 #include <vector>
 #include "Particle.h"
 #include "forces/Force.h"
-#include "constraints/ConstraintSolver.h"
+
 
 class ParticleSystem {
 
@@ -13,12 +13,12 @@ public:
 
     std::vector<Particle*> particles;
     std::vector<Force*> forces;
-    std::vector<Constraint*> constraints;
+
     float time;
 
     void drawParticles();
     void drawForces();
-    void drawConstraints();
+
 };
 
 

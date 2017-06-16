@@ -5,12 +5,12 @@
 
 class StaticForce : public Force{
 public:
-    StaticForce(Particle *p1, Vec2f sForce);
+    StaticForce(Particle *p1, Vec3f sForce);
     void calc_Force() override;
     void draw() override;
 
 private:
 
     Particle *const m_p1;   // particle 1
-    Vec2f m_s;
+    Vec3f m_s;
 };

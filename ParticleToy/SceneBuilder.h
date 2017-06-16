@@ -12,18 +12,11 @@
 #include "forces/SpringForce.h"
 #include "forces/StaticForce.h"
 #include "forces/FloorForce.h"
-#include "constraints/CircularWireConstraint.h"
-#include "constraints/RodConstraint.h"
-#include "constraints/LineConstraint.h"
 
 
 
 ParticleSystem* createEmptyScene();
-ParticleSystem* createCircularWireScene();
-ParticleSystem* createCurtainScene();
-ParticleSystem* createHairAngularSprings();
-ParticleSystem* createSimpleAngularSprings();
-ParticleSystem* createCurtain2Scene();
+ParticleSystem* createBoxScene();
 ParticleSystem* createSimpleClothScene();
 
 #endif //SIMULATION_1_SCENEBUILDER_H
